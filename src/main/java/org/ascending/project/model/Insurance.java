@@ -1,11 +1,19 @@
 package org.ascending.project.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "insurances")
 public class Insurance {
     public Insurance() {}
 
+    @Id  //pk
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+    @Column(name = "company_name")
     private String company_name;
-
+    @Column(name = "Sepcifications")
     private String Sepcifications;
 
     public void setId(long id){
