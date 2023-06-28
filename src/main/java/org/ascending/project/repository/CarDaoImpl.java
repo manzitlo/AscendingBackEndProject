@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarDaoImpl implements ICarDao{
+public class CarDaoImpl{
     static final String DB_URL = "jdbc:postgresql://localhost:5431/Car_DB";
     static final String USER = "wenzhe";
     static final String PASS = "Wenzhe7777";
@@ -25,7 +25,6 @@ public class CarDaoImpl implements ICarDao{
                 .build();
     }
 
-    @Override
     public List<Car> getCars() {
 
         Logger logger = LoggerFactory.getLogger(getClass());

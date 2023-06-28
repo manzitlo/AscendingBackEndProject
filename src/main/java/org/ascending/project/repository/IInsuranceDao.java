@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface IInsuranceDao {
 
-    public List<Insurance> getInsurances();
+
+    // Read
+    List<Insurance> getInsurances();
+    // Create
+    void saveInsurance(Insurance insurance);
+    //Update = 1. get + 2. save [ps: id is primary key!]
+    Insurance getById(long id);
+    // Delete
+    void deleteInsurance(Insurance insurance);
 }

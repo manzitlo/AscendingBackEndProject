@@ -12,18 +12,18 @@ public class Insurance {
     @Column(name = "id")
     private long id;
     @Column(name = "company_name")
-    private String company_name;
-    @Column(name = "Sepcifications")
-    private String Sepcifications;
+    private String companyName;
+    @Column(name = "sepcifications")
+    private String sepcifications;
 
     public void setId(long id){
         this.id = id;
     }
-    public void setCompanyName(String company_name){
-        this.company_name = company_name;
+    public void setCompanyName(String companyName){
+        this.companyName = companyName;
     }
-    public void setSepcifications(String Sepcifications){
-        this.Sepcifications = Sepcifications;
+    public void setSepcifications(String sepcifications){
+        this.sepcifications = sepcifications;
     }
 
 

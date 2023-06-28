@@ -5,5 +5,12 @@ import org.ascending.project.model.Car;
 import java.util.List;
 
 public interface ICarDao {
-    public List<Car> getCars();
+    // Read
+    List<Car> getCars();
+    // Create
+    void saveCar(Car car);
+    //Update = 1. get + 2. save [ps: id is primary key!]
+    Car getById(long id);
+    // Delete
+    void deleteCar(Car car);
 }

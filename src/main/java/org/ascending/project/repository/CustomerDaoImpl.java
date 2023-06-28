@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDaoImpl implements ICustomerDao{
+public class CustomerDaoImpl{
 
     static final String DB_URL = "jdbc:postgresql://localhost:5431/Car_DB";
     static final String USER = "wenzhe";
@@ -26,7 +26,6 @@ public class CustomerDaoImpl implements ICustomerDao{
                 .build();
     }
 
-    @Override
     public List<Customer> getCustomers() {
 
         Logger logger = LoggerFactory.getLogger(getClass());

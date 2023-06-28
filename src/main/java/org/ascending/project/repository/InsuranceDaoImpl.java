@@ -12,12 +12,13 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-public class InsuranceDaoImpl implements IInsuranceDao {
+public class InsuranceDaoImpl {
     static final String DB_URL = "jdbc:postgresql://localhost:5431/Car_DB";
     static final String USER = "wenzhe";
     static final String PASS = "Wenzhe7777";
 
     private Cache<String, List<Insurance>> cache;
+
     public InsuranceDaoImpl() {
         // Create cache instance based on Guava
         cache = CacheBuilder.newBuilder()
@@ -25,7 +26,6 @@ public class InsuranceDaoImpl implements IInsuranceDao {
                 .build();
     }
 
-    @Override
     public List<Insurance> getInsurances() {
 
         Logger logger = LoggerFactory.getLogger(getClass());
@@ -62,7 +62,7 @@ public class InsuranceDaoImpl implements IInsuranceDao {
             rs = stmt.executeQuery(sql);
             logger.info("Connects to DB and execute the Query!");
 
-            while (rs.next()){
+            while (rs.next()) {
                 Long id = rs.getLong("id");
                 String company_name = rs.getString("company_name");
                 String Sepcifications = rs.getString("Sepcifications");
@@ -75,7 +75,7 @@ public class InsuranceDaoImpl implements IInsuranceDao {
             }
 
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             logger.error("Unable to connect DB or execute Query.");
             //e.printStackTrace();
         } finally {
@@ -85,7 +85,7 @@ public class InsuranceDaoImpl implements IInsuranceDao {
                 if (stmt != null) stmt.close();
                 if (conn != null) conn.close();
 
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 logger.error("Unable to close DB connection.");
                 //e.printStackTrace();
             }
