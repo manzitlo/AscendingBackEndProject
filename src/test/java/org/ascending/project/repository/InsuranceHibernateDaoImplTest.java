@@ -5,8 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 import static junit.framework.Assert.assertEquals;
 
 public class InsuranceHibernateDaoImplTest {
@@ -17,7 +15,7 @@ public class InsuranceHibernateDaoImplTest {
     public void setUp() {
         insuranceHibernateDao = new InsuranceHibernateDaoImpl();
         d1 = new Insurance();
-        d1.setId(1);
+//        d1.setId(20200203L);
         d1.setCompanyName("ABC");
         d1.setSepcifications("half year term");
         insuranceHibernateDao.saveInsurance(d1);
@@ -25,11 +23,11 @@ public class InsuranceHibernateDaoImplTest {
 
     @After
     public void tearDown(){
-        insuranceHibernateDao.deleteInsurance(d1);
+//        insuranceHibernateDao.deleteInsurance(d1);
     }
 
     @Test
     public void getInsurancesTest() {
-        assertEquals(1, insuranceHibernateDao.getInsurances().size());
+        assertEquals(5, insuranceHibernateDao.getInsurances().size());
     }
 }

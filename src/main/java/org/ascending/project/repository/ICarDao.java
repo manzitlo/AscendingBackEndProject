@@ -5,6 +5,7 @@ import org.ascending.project.model.Car;
 import java.util.List;
 
 public interface ICarDao {
+
     // Read
     List<Car> getCars();
     // Create

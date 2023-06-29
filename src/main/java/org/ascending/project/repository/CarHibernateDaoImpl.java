@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarHibernateDaoImpl implements ICarDao {
-    public static final Logger logger = LoggerFactory.getLogger(InsuranceHibernateDaoImpl.class);
+    public static final Logger logger = LoggerFactory.getLogger(CarHibernateDaoImpl.class);
 
     @Override
     public void saveCar(Car car){
@@ -23,8 +23,9 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         try{
             Session session = sessionFactory.openSession();
-
+            session.beginTransaction();
             session.save(car);
+            session.getTransaction().commit();
             session.close();
 
         } catch (HibernateException e){
@@ -92,7 +93,9 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         try{
             Session session = sessionFactory.openSession();
+            session.beginTransaction();
             session.delete(car);
+            session.getTransaction().commit();
             session.close();
 
         } catch (HibernateException e){
