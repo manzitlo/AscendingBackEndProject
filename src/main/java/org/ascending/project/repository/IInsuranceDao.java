@@ -10,9 +10,9 @@ public interface IInsuranceDao {
     // Read
     List<Insurance> getInsurances();
     // Create
-    void saveInsurance(Insurance insurance); //
+    void save(Insurance insurance); //
     //Update = 1. get + 2. save [ps: id is primary key!]
     Insurance getById(long id);
     // Delete
-    void deleteInsurance(Insurance insurance); //
+    void delete(Insurance insurance); //
 }

@@ -19,7 +19,7 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     private static final Logger logger = LoggerFactory.getLogger(CustomerHibernateDaoImpl.class);
 
     @Override
-    public void saveCustomer(Customer customer){
+    public void save(Customer customer){
 
         logger.info("Start to save Customer to Postgres via Hibernate");
 
@@ -90,7 +90,7 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     }
 
     @Override
-    public void deleteCustomer(Customer customer){
+    public void delete(Customer customer){
         logger.info("Start to getCustomer from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();

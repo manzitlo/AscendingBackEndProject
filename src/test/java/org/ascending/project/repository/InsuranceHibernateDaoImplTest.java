@@ -18,12 +18,12 @@ public class InsuranceHibernateDaoImplTest {
 //        d1.setId(20200203L);
         d1.setCompanyName("ABC");
         d1.setSepcifications("half year term");
-        insuranceHibernateDao.saveInsurance(d1);
+        insuranceHibernateDao.save(d1);
     }
 
     @After
     public void tearDown(){
-        insuranceHibernateDao.deleteInsurance(d1);
+//        insuranceHibernateDao.delete(d1);
     }
 
     @Test

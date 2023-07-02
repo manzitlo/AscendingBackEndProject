@@ -16,7 +16,7 @@ public class CarHibernateDaoImpl implements ICarDao {
     public static final Logger logger = LoggerFactory.getLogger(CarHibernateDaoImpl.class);
 
     @Override
-    public void saveCar(Car car){
+    public void save(Car car){
         logger.info("Start to getCar from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -86,7 +86,7 @@ public class CarHibernateDaoImpl implements ICarDao {
     }
 
     @Override
-    public void deleteCar(Car car) {
+    public void delete(Car car) {
         logger.info("Start to getCar from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();

@@ -17,7 +17,7 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
     private static final Logger logger = LoggerFactory.getLogger(InsuranceHibernateDaoImpl.class);
 
     @Override
-    public void saveInsurance(Insurance insurance){
+    public void save(Insurance insurance){
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -83,7 +83,7 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
     }
 
     @Override
-    public void deleteInsurance(Insurance insurance) {
+    public void delete(Insurance insurance) {
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();

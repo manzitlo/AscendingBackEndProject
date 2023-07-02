@@ -27,9 +27,9 @@ public class CustomerHibernateDaoImplTest {
         cu1.setFirstName("Wenzhe");
         cu1.setGender("male");
         cu1.setAge(Integer.valueOf("29"));
-        cu1.setCarId(12);
+        cu1.setCarId(15);
         cu1.setTransactionDate(Date.valueOf("2020-02-19"));
-        customerHibernateDao.saveCustomer(cu1);
+        customerHibernateDao.save(cu1);
     }
 
     @After
@@ -39,6 +39,6 @@ public class CustomerHibernateDaoImplTest {
 
     @Test
     public void getCustomerTest() {
-        assertEquals(2, customerHibernateDao.getCustomers().size());
+        assertEquals(1, customerHibernateDao.getCustomers().size());
     }
 }

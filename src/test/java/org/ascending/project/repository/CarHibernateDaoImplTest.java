@@ -23,13 +23,13 @@ public class CarHibernateDaoImplTest {
         c1.setModel("GL450");
         c1.setYear(2014);
         c1.setColor("black");
-        c1.setInsuranceId(25);
-        carHibernateDao.saveCar(c1);
+        c1.setInsuranceId(37);
+        carHibernateDao.save(c1);
     }
 
     @After
     public void teardown() {
-//        carHibernateDao.deleteCar(c1);
+//        carHibernateDao.delete(c1);
     }
 
     @Test
