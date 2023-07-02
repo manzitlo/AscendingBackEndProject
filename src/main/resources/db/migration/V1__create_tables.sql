@@ -13,7 +13,6 @@ CREATE TABLE cars(
                      model				VARCHAR(10) not null unique,
                      color				VARCHAR(10),
                      insurance_id 		BIGSERIAL NOT NULL
-
 );
 
 ALTER TABLE cars ADD CONSTRAINT insurance_id_pk PRIMARY KEY (id);

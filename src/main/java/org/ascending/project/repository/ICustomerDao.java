@@ -9,9 +9,9 @@ public interface ICustomerDao {
     // Read
     List<Customer> getCustomers();
     // Create
-    void saveCustomer(Customer customer);
+    void saveCustomer(Customer customer); //
     //Update = 1. get + 2. save [ps: id is primary key!]
     Customer getById(long customer_id);
     // Delete
-    void deleteCustomer(Customer customer);
+    void deleteCustomer(Customer customer); //
 }

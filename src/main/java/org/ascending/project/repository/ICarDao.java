@@ -9,9 +9,9 @@ public interface ICarDao {
     // Read
     List<Car> getCars();
     // Create
-    void saveCar(Car car);
+    void saveCar(Car car);  //
     //Update = 1. get + 2. save [ps: id is primary key!]
     Car getById(long id);
     // Delete
-    void deleteCar(Car car);
+    void deleteCar(Car car);  //
 }

@@ -23,11 +23,11 @@ public class InsuranceHibernateDaoImplTest {
 
     @After
     public void tearDown(){
-//        insuranceHibernateDao.deleteInsurance(d1);
+        insuranceHibernateDao.deleteInsurance(d1);
     }
 
     @Test
     public void getInsurancesTest() {
-        assertEquals(5, insuranceHibernateDao.getInsurances().size());
+        assertEquals(1, insuranceHibernateDao.getInsurances().size());
     }
 }
