@@ -79,7 +79,7 @@ public class CustomerDaoImpl{
                 customer.setAge(age);
                 customer.setGender(gender);
                 customer.setTransactionDate(transaction_date);
-                customer.setCarId(car_id);
+//                customer.setCarId(car_id);
                 customers.add(customer);
             }
 

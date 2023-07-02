@@ -15,7 +15,7 @@ public class InsuranceHibernateDaoImplTest {
     public void setUp() {
         insuranceHibernateDao = new InsuranceHibernateDaoImpl();
         d1 = new Insurance();
-//        d1.setId(20200203L);
+//        d1.setId((long) (Math.random()*(100L - 1L)));
         d1.setCompanyName("ABC");
         d1.setSepcifications("half year term");
         insuranceHibernateDao.save(d1);
@@ -28,6 +28,6 @@ public class InsuranceHibernateDaoImplTest {
 
     @Test
     public void getInsurancesTest() {
-        assertEquals(1, insuranceHibernateDao.getInsurances().size());
+        assertEquals(4, insuranceHibernateDao.getInsurances().size());
     }
 }

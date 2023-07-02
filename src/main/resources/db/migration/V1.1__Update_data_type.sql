@@ -1,0 +1,1 @@
+ALTER TABLE cars ALTER_COLUMN insurance_id TYPE BIGINT;

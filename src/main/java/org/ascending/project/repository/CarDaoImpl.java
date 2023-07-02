@@ -74,7 +74,7 @@ public class CarDaoImpl{
                 car.setBrand(brand);
                 car.setYear(year);
                 car.setModel(model);
-                car.setInsuranceId(insurance_id);
+//                car.setInsuranceId(insurance_id);
                 cars.add(car);
             }
 

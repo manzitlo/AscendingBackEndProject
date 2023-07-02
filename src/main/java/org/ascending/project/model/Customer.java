@@ -25,7 +25,11 @@ public class Customer {
     @Column(name = "transaction_date")
     private Date transaction_date;  // default CURRENT_TIME  in SQL
     @Column(name = "car_id")
-    private long car_id;
+    private long carId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "car_id")
+//    private Car car;
 
     public void setCustomerId (long customer_id){
         this.customer_id = customer_id;
@@ -49,7 +53,7 @@ public class Customer {
         this.transaction_date = transaction_date;
     }
 
-    public void setCarId (long car_id){
-        this.car_id = car_id;
-    }
+//    public void setCarId (long car_id){
+//        this.carId = car_id;
+//    }
 }

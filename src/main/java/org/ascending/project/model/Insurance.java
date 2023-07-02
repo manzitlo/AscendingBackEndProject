@@ -1,6 +1,7 @@
 package org.ascending.project.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "insurances")
@@ -15,6 +16,10 @@ public class Insurance {
     private String companyName;
     @Column(name = "sepcifications")
     private String sepcifications;
+
+//    @ManyToOne
+//    @JoinColumn(name = "car_id")
+//    private Car car;
 
     public void setId(long id){
         this.id = id;

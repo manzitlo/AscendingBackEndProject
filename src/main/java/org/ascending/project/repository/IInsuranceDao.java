@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface IInsuranceDao {
 
-
     // Read
     List<Insurance> getInsurances();
     // Create

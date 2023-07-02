@@ -75,7 +75,7 @@ public class CarHibernateDaoImpl implements ICarDao {
             car.setYear(Integer.valueOf("year"));
             car.setModel("model");
             car.setColor("color");
-            car.setInsuranceId(Long.parseLong("insurance_id"));
+//            car.setInsuranceId(Long.parseLong("insurance_id"));
             session.close();
 
         } catch (HibernateException e){

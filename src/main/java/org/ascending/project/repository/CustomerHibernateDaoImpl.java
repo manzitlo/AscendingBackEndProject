@@ -75,7 +75,7 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
 
             customer = session.get(Customer.class, customer_id);
             customer.setAge(Integer.valueOf("age"));
-            customer.setCarId(Long.parseLong("car_id"));
+//            customer.setCarId(Long.parseLong("car_id"));
             customer.setFirstName("first_name");
             customer.setLastName("last_name");
             customer.setGender("gender");

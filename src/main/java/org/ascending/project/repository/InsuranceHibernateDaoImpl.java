@@ -5,6 +5,7 @@ import org.ascending.project.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,19 +17,27 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
 
     private static final Logger logger = LoggerFactory.getLogger(InsuranceHibernateDaoImpl.class);
 
+
     @Override
     public void save(Insurance insurance){
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Transaction transaction = null;
 
         try{
             Session session = sessionFactory.openSession();
-
+            transaction = session.beginTransaction();
             session.save(insurance);
+            transaction.commit();
             session.close();
 
+
         } catch (HibernateException e){
+            if (transaction != null){
+                logger.error("Save Transaction failed... Rollback ing.");
+                transaction.rollback();
+            }
             logger.error("Unable to open or close", e);
         }
         logger.info("Hava already save {}", insurance);
@@ -41,6 +50,7 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
 
         List<Insurance> insurances = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
 
         try{
             Session session = sessionFactory.openSession();
@@ -66,16 +76,22 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
         Insurance insurance = null;
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Transaction transaction = null;
 
         try{
             Session session = sessionFactory.openSession();
-
+            transaction = session.beginTransaction();
             insurance = session.get(Insurance.class, id);
             insurance.setSepcifications("Sepcifications");
             insurance.setCompanyName("company_name");
+            transaction.commit();
             session.close();
 
         } catch (HibernateException e){
+            if (transaction != null) {
+                logger.error("Update Transaction failed... Rollback ing.");
+                transaction.rollback();
+            }
             logger.error("Unable to open or close", e);
         }
         logger.info("Hava already update {}", insurance);
@@ -87,16 +103,22 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Transaction transaction = null;
 
         try{
             Session session = sessionFactory.openSession();
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.delete(insurance);
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
+            logger.debug("Removed insurance from cache: {}", insurance);
 
         } catch (HibernateException e){
             logger.error("Unable to open or close", e);
+            if (transaction != null){
+                logger.error("Delete Transaction failed... Rollback ing.");
+                transaction.rollback();
+            }
         }
         logger.info("Hava already delete {}", insurance);
     }

@@ -27,7 +27,7 @@ public class CustomerHibernateDaoImplTest {
         cu1.setFirstName("Wenzhe");
         cu1.setGender("male");
         cu1.setAge(Integer.valueOf("29"));
-        cu1.setCarId(15);
+//        cu1.setCarId(15);
         cu1.setTransactionDate(Date.valueOf("2020-02-19"));
         customerHibernateDao.save(cu1);
     }
