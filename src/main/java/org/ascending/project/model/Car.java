@@ -1,6 +1,7 @@
 package org.ascending.project.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,12 +24,8 @@ public class Car {
     @Column(name = "insurance_id")
     private long insuranceId;
 
-//    //One Car  ->  Many insurances
-//    @OneToMany(mappedBy = "insurance", cascade = CascadeType.REMOVE)
-//    private Set<Insurance> insurances;
-
-//    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
-//    private Set<Customer> customers;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
+    private List<Customer> customers;
 
     public void setId(long id) {
         this.id = id;
@@ -48,5 +45,12 @@ public class Car {
 
     public void setInsuranceId(long insurance_id){
         this.insuranceId = insurance_id;
+    }
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
     }
 }

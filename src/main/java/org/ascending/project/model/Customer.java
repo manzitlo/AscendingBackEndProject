@@ -24,12 +24,12 @@ public class Customer {
     private String gender;
     @Column(name = "transaction_date")
     private Date transaction_date;  // default CURRENT_TIME  in SQL
-    @Column(name = "car_id")
-    private long carId;
+//    @Column(name = "car_id")
+//    private long carId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "car_id")
-//    private Car car;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     public void setCustomerId (long customer_id){
         this.customer_id = customer_id;
@@ -56,4 +56,7 @@ public class Customer {
 //    public void setCarId (long car_id){
 //        this.carId = car_id;
 //    }
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }

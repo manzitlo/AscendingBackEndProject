@@ -22,28 +22,32 @@ public class CarHibernateDaoImplTest {
     @Before
     public void setUp(){
         carHibernateDao = new CarHibernateDaoImpl();
+        customerHibernateDao = new CustomerHibernateDaoImpl();
         c1 = new Car();
         c1.setBrand("Benz");
         c1.setModel("GL450");
         c1.setYear(2014);
         c1.setColor("black");
+        c1.setInsuranceId(53);
         carHibernateDao.save(c1);
 
-//        cu1 = new Customer();
-//        cu1.setAge(29);
-//        cu1.setFirstName("Wenzhe");
-//        cu1.setLastName("Luo");
-//        cu1.setGender("Male");
-//        cu1.setTransactionDate(Date.valueOf("2020-02-10"));
-//        customerHibernateDao.save(cu1);
-//
-//        cu2 = new Customer();
-//        cu2.setAge(27);
-//        cu2.setFirstName("Yiming");
-//        cu2.setLastName("Dong");
-//        cu2.setGender("Female");
-//        cu2.setTransactionDate(Date.valueOf("2023-02-10"));
-//        customerHibernateDao.save(cu2);
+        cu1 = new Customer();
+        cu1.setAge(29);
+        cu1.setFirstName("Wenzhe");
+        cu1.setLastName("Luo");
+        cu1.setGender("Male");
+        cu1.setTransactionDate(Date.valueOf("2020-02-10"));
+        cu1.setCar(c1);
+        customerHibernateDao.save(cu1);
+
+        cu2 = new Customer();
+        cu2.setAge(27);
+        cu2.setFirstName("Yiming");
+        cu2.setLastName("Dong");
+        cu2.setGender("Female");
+        cu2.setTransactionDate(Date.valueOf("2023-02-10"));
+        cu2.setCar(c1);
+        customerHibernateDao.save(cu2);
     }
 
     @After
