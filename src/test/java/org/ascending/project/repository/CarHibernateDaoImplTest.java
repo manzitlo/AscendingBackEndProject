@@ -16,6 +16,7 @@ public class CarHibernateDaoImplTest {
     private CarHibernateDaoImpl carHibernateDao;
     private CustomerHibernateDaoImpl customerHibernateDao;
     private Car c1;
+    private Car c2;
     private Customer cu1;
     private Customer cu2;
     private Customer cu3;
@@ -29,8 +30,16 @@ public class CarHibernateDaoImplTest {
         c1.setModel("GL450");
         c1.setYear(2014);
         c1.setColor("black");
-        c1.setInsuranceId(53);
+        c1.setInsuranceId(60);
         carHibernateDao.save(c1);
+
+        c2 = new Car();
+        c2.setBrand("Honda");
+        c2.setModel("Passport");
+        c2.setYear(2023);
+        c2.setColor("grey");
+        c2.setInsuranceId(59);
+        carHibernateDao.save(c2);
 
         cu1 = new Customer();
         cu1.setAge(30);
@@ -47,7 +56,7 @@ public class CarHibernateDaoImplTest {
         cu2.setLastName("Dong");
         cu2.setGender("Female");
         cu2.setTransactionDate(Date.valueOf("2023-02-10"));
-        cu2.setCar(c1);
+        cu2.setCar(c2);
         customerHibernateDao.save(cu2);
 
         cu3 = new Customer();
@@ -56,7 +65,7 @@ public class CarHibernateDaoImplTest {
         cu3.setLastName("DOXIE");
         cu3.setGender("Female");
         cu3.setTransactionDate(Date.valueOf("2023-02-10"));
-        cu3.setCar(c1);
+        cu3.setCar(c2);
         customerHibernateDao.save(cu3);
     }
 
@@ -67,7 +76,7 @@ public class CarHibernateDaoImplTest {
 
     @Test
     public void getCarTest() {
-        assertEquals(1, carHibernateDao.getCars().size());
+        assertEquals(2, carHibernateDao.getCars().size());
     }
 
 
