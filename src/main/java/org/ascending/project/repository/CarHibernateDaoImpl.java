@@ -40,7 +40,7 @@ public class CarHibernateDaoImpl implements ICarDao {
     @Override
     public List<Car> getCars(){
 
-        logger.info("Start to getInsurance from Postgres via Hibernate");
+        logger.info("Start to getCar from Postgres via Hibernate");
 
         List<Car> cars = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -58,7 +58,7 @@ public class CarHibernateDaoImpl implements ICarDao {
             logger.error("Unable to open or close", e);
         }
 
-        logger.info("Get insurances {}", cars);
+        logger.info("Get cars {}", cars);
         return cars;
     }
 
