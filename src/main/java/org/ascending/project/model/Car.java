@@ -24,7 +24,7 @@ public class Car {
     @Column(name = "insurance_id")
     private long insuranceId;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Customer> customers;
 
     public void setId(long id) {

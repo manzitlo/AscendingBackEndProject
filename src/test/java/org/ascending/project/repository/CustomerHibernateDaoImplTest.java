@@ -39,6 +39,6 @@ public class CustomerHibernateDaoImplTest {
 
     @Test
     public void getCustomerTest() {
-        assertEquals(1, customerHibernateDao.getCustomers().size());
+        assertEquals(2, customerHibernateDao.getCustomers().size());
     }
 }

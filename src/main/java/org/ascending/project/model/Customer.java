@@ -27,7 +27,7 @@ public class Customer {
 //    @Column(name = "car_id")
 //    private long carId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
 

@@ -18,6 +18,7 @@ public class CarHibernateDaoImplTest {
     private Car c1;
     private Customer cu1;
     private Customer cu2;
+    private Customer cu3;
 
     @Before
     public void setUp(){
@@ -32,7 +33,7 @@ public class CarHibernateDaoImplTest {
         carHibernateDao.save(c1);
 
         cu1 = new Customer();
-        cu1.setAge(29);
+        cu1.setAge(30);
         cu1.setFirstName("Wenzhe");
         cu1.setLastName("Luo");
         cu1.setGender("Male");
@@ -41,13 +42,22 @@ public class CarHibernateDaoImplTest {
         customerHibernateDao.save(cu1);
 
         cu2 = new Customer();
-        cu2.setAge(27);
+        cu2.setAge(28);
         cu2.setFirstName("Yiming");
         cu2.setLastName("Dong");
         cu2.setGender("Female");
         cu2.setTransactionDate(Date.valueOf("2023-02-10"));
         cu2.setCar(c1);
         customerHibernateDao.save(cu2);
+
+        cu3 = new Customer();
+        cu3.setAge(3);
+        cu3.setFirstName("Tracy");
+        cu3.setLastName("DOXIE");
+        cu3.setGender("Female");
+        cu3.setTransactionDate(Date.valueOf("2023-02-10"));
+        cu3.setCar(c1);
+        customerHibernateDao.save(cu3);
     }
 
     @After

@@ -5,13 +5,16 @@ import org.ascending.project.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class CarHibernateDaoImpl implements ICarDao {
     public static final Logger logger = LoggerFactory.getLogger(CarHibernateDaoImpl.class);
 
@@ -90,19 +93,29 @@ public class CarHibernateDaoImpl implements ICarDao {
         logger.info("Start to getCar from Postgres via Hibernate");
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Transaction transaction = null;
 
         try{
             Session session = sessionFactory.openSession();
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.delete(car);
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
 
         } catch (HibernateException e){
+            if (transaction != null){
+                logger.error("Delete transaction failed, Rollback...");
+                transaction.rollback();
+            }
             logger.error("Unable to open or close", e);
         }
         logger.info("Hava already delete {}", car);
     }
 
+//    @Override
+//    public Car getCarEagerBy(Long id){
+//        String hql = "FROM Car c LEFT JOIN FETCH c.customers where c.id :Id";
+//        Session
+//    }
 }
 
