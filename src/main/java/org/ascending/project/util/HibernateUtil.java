@@ -22,11 +22,11 @@ public class HibernateUtil {
             try {
 
                 String[] modelPackages = {"org.ascending.project.model"}; //
-                String dbDriver = System.getProperty("database.driver");
-                String dbDialect = System.getProperty("database.dialect");
-                String dbUrl = System.getProperty("database.url");
-                String dbUser = System.getProperty("database.user");
-                String dbPassword = System.getProperty("database.password");
+                String dbDriver = "org.postgresql.Driver";
+                String dbDialect = "org.hibernate.dialect.PostgreSQL9Dialect";
+                String dbUrl = "jdbc:postgresql://localhost:5431/AscendingProject";
+                String dbUser = "wenzhe";
+                String dbPassword = "Wenzhe777";
 
                 Configuration configuration = new Configuration();
                 Properties settings = new Properties();

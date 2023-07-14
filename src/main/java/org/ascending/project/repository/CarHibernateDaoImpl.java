@@ -44,9 +44,8 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         List<Car> cars = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
+        Session session = sessionFactory.openSession();
         try{
-            Session session = sessionFactory.openSession();
 
             String hql = "from Car";
             Query<Car> query = session.createQuery(hql);
@@ -56,6 +55,7 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         } catch (HibernateException e){
             logger.error("Unable to open or close", e);
+            session.close();
         }
 
         logger.info("Get cars {}", cars);

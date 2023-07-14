@@ -2,9 +2,11 @@ package org.ascending.project.repository;
 
 import org.ascending.project.model.Car;
 import org.ascending.project.util.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,7 +16,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CarHibernateDaoImplTest {
@@ -25,6 +29,14 @@ public class CarHibernateDaoImplTest {
     private Session mockSession;
     @Mock
     private Query mockQuery;
+
+    private ICarDao carDao;
+
+    @Before
+    public void setup() {
+        initMocks(this);
+        carDao = new CarHibernateDaoImpl();
+    }
 
     @Test
     public void getCarsTest() {
@@ -45,9 +57,28 @@ public class CarHibernateDaoImplTest {
 
             List<Car> actualResult = carHibernateDao.getCars();
             assertEquals(result, actualResult);
-            }
+        }
+    }
+
+    @Test
+    public void getCarsTest_getHibernateException() {
+
+        Car car = new Car(1,"BMW", 2023, "X7", "black", 61);
+        List<Car> result = List.of(car);
+
+        try (MockedStatic mockedStatic = mockStatic(HibernateUtil.class)) {
+            mockedStatic.when(HibernateUtil::getSessionFactory).thenReturn(mockSessionFactory);
+
+            when(mockSessionFactory.openSession()).thenReturn(mockSession);
+            when(mockSession.createQuery(any(String.class))).thenReturn(mockQuery);
+            when(mockQuery.list()).thenReturn(result);
+            doThrow(HibernateException.class).when(mockSession).close();
+
+            assertThrows(HibernateException.class, () -> carDao.getCars());
+
         }
 
+    }
 
 
 //    JUnit Testing:
