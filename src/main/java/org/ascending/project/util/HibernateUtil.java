@@ -24,9 +24,9 @@ public class HibernateUtil {
                 String[] modelPackages = {"org.ascending.project.model"}; //
                 String dbDriver = "org.postgresql.Driver";
                 String dbDialect = "org.hibernate.dialect.PostgreSQL9Dialect";
-                String dbUrl = "jdbc:postgresql://localhost:5431/AscendingProject";
+                String dbUrl = "jdbc:postgresql://localhost:5431/Car_DB";
                 String dbUser = "wenzhe";
-                String dbPassword = "Wenzhe777";
+                String dbPassword = "Wenzhe7777";
 
                 Configuration configuration = new Configuration();
                 Properties settings = new Properties();

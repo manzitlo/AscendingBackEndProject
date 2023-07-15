@@ -80,7 +80,6 @@ public class CarHibernateDaoImplTest {
 
     }
 
-
 //    JUnit Testing:
 //    private CarHibernateDaoImpl carHibernateDao;
 //    private CustomerHibernateDaoImpl customerHibernateDao;
