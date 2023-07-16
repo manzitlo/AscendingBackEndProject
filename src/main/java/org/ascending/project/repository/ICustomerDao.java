@@ -14,4 +14,6 @@ public interface ICustomerDao {
     Customer getById(long customer_id);
     // Delete
     void delete(Customer customer); //
+
+    Customer update(Customer customer);
 }

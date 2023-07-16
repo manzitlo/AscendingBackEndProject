@@ -28,6 +28,6 @@ public class InsuranceHibernateDaoImplTest {
 
     @Test
     public void getInsurancesTest() {
-        assertEquals(2, insuranceHibernateDao.getInsurances().size());
+        assertEquals(3, insuranceHibernateDao.getInsurances().size());
     }
 }

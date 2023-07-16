@@ -1,7 +1,6 @@
 package org.ascending.project.repository;
 
 import org.ascending.project.model.Car;
-import org.ascending.project.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -18,11 +18,12 @@ import java.util.List;
 public class CarHibernateDaoImpl implements ICarDao {
     public static final Logger logger = LoggerFactory.getLogger(CarHibernateDaoImpl.class);
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public void save(Car car){
         logger.info("Start to getCar from Postgres via Hibernate");
-
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         try{
             Session session = sessionFactory.openSession();
@@ -43,7 +44,6 @@ public class CarHibernateDaoImpl implements ICarDao {
         logger.info("Start to getCar from Postgres via Hibernate");
 
         List<Car> cars = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         try{
 
@@ -68,8 +68,6 @@ public class CarHibernateDaoImpl implements ICarDao {
         logger.info("Start to getCar from Postgres via Hibernate");
         Car car = null;
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
         try{
             Session session = sessionFactory.openSession();
 
@@ -92,7 +90,6 @@ public class CarHibernateDaoImpl implements ICarDao {
     public void delete(Car car) {
         logger.info("Start to getCar from Postgres via Hibernate");
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Transaction transaction = null;
 
         try{

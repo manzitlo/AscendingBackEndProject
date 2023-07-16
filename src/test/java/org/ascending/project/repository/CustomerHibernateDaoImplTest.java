@@ -1,25 +1,31 @@
 package org.ascending.project.repository;
 
 
+import org.ascending.project.ApplicationBootstrap;
 import org.ascending.project.model.Customer;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Date;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ApplicationBootstrap.class)
 public class CustomerHibernateDaoImplTest {
 
+    @Autowired
     private CustomerHibernateDaoImpl customerHibernateDao;
 
     private Customer cu1;
 
     @Before
     public void setup() {
-        customerHibernateDao = new CustomerHibernateDaoImpl();
 
         cu1 = new Customer();
 //        cu1.setCustomerId(2);
@@ -39,6 +45,6 @@ public class CustomerHibernateDaoImplTest {
 
     @Test
     public void getCustomerTest() {
-        assertEquals(2, customerHibernateDao.getCustomers().size());
+        assertEquals(3, customerHibernateDao.getCustomers().size());
     }
 }

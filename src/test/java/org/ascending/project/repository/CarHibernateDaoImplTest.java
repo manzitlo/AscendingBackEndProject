@@ -39,7 +39,7 @@ public class CarHibernateDaoImplTest {
     }
 
     @Test
-    public void getCarsTest() {
+    public void getCarsTest_happyPath() {
 
         CarHibernateDaoImpl carHibernateDao = new CarHibernateDaoImpl();
 
@@ -77,7 +77,6 @@ public class CarHibernateDaoImplTest {
             assertThrows(HibernateException.class, () -> carDao.getCars());
 
         }
-
     }
 
 //    JUnit Testing:

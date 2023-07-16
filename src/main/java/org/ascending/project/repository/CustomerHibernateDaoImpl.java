@@ -1,17 +1,16 @@
 package org.ascending.project.repository;
 
 import org.ascending.project.model.Customer;
-import org.ascending.project.model.Insurance;
-import org.ascending.project.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +19,16 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerHibernateDaoImpl.class);
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public void save(Customer customer){
 
         logger.info("Start to save Customer to Postgres via Hibernate");
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         try{
-
             Session session = sessionFactory.openSession();
             session.save(customer);
             session.close();
@@ -45,7 +45,6 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
         logger.info("Start to getCustomer from Postgres via Hibernate");
 
         List<Customer> customers = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         try{
 
@@ -67,35 +66,28 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     @Override
     public Customer getById(long customer_id){
         logger.info("Start to getCustomer from Postgres via Hibernate");
-        Customer customer = null;
+        Session session = sessionFactory.openSession();
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        String hql = "FROM Customer c where id= :Id";
 
         try{
 
-            Session session = sessionFactory.openSession();
-
-            customer = session.get(Customer.class, customer_id);
-            customer.setAge(Integer.valueOf("age"));
-//            customer.setCarId(Long.parseLong("car_id"));
-            customer.setFirstName("first_name");
-            customer.setLastName("last_name");
-            customer.setGender("gender");
-            customer.setTransactionDate(Date.valueOf("transaction_date"));
+            Query<Customer> query = session.createQuery(hql);
+            query.setParameter("Id", customer_id);
+            Customer result = query.uniqueResult();
             session.close();
+            return result;
 
         }catch (HibernateException e){
             logger.error("Unable to opan or close", e);
+            session.close();
+            return null;
         }
-        logger.info("Have already update {}", customer);
-        return customer;
     }
 
     @Override
     public void delete(Customer customer){
         logger.info("Start to getCustomer from Postgres via Hibernate");
-
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         try{
             Session session = sessionFactory.openSession();
@@ -108,6 +100,28 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
             logger.error("Unable to open or close", e);
         }
         logger.info("Hava already delete {}", customer);
+
+    }
+
+    @Override
+    public Customer update(Customer customer){
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(customer);
+            Customer c = getById(customer.getCustomerId());
+            transaction.commit();
+            session.close();
+            return c;
+        } catch (HibernateException e) {
+            if (transaction != null){
+                transaction.rollback();
+            }
+            logger.error("failed to insert record", e);
+            session.close();
+            return null;
+        }
     }
 
 }

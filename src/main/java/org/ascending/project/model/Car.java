@@ -40,6 +40,9 @@ public class Car {
     public void setId(long id) {
         this.id = id;
     }
+    public long getId() {
+        return id;
+    }
     public void setBrand(String brand){
         this.brand = brand;
     }
