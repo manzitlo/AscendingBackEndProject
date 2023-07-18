@@ -27,10 +27,13 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
 
         logger.info("Start to save Customer to Postgres via Hibernate");
 
+        Transaction transaction = null;
 
         try{
             Session session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             session.save(customer);
+            transaction.commit();
             session.close();
 
         } catch (HibernateException e){

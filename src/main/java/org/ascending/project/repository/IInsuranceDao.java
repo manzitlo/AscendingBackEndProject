@@ -14,4 +14,6 @@ public interface IInsuranceDao {
     Insurance getById(long id);
     // Delete
     void delete(Insurance insurance); //
+
+    Insurance update(Insurance insurance);
 }

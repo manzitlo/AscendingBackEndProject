@@ -1,6 +1,5 @@
 package org.ascending.project.repository;
 
-
 import org.ascending.project.ApplicationBootstrap;
 import org.ascending.project.model.Customer;
 import org.junit.After;

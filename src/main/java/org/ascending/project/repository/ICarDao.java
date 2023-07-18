@@ -14,4 +14,6 @@ public interface ICarDao {
     Car getById(long id);
     // Delete
     void delete(Car car);
+
+    Car update(Car car);
 }

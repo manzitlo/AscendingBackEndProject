@@ -18,11 +18,6 @@ public class CustomerController {
     private CustomerService customerService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-
-//    public void testCustomers() {
-//        logger.info("This is a test...");
-//    }
-
     public List<Customer> getCustomers() {
         List<Customer> customers = customerService.getCustomers();
         return customers;
@@ -46,5 +41,6 @@ public class CustomerController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void create(@RequestBody Customer customer) {
         logger.info("Post a new object {}", customer.getFirst_name());
+        customerService.save(customer);
     }
 }

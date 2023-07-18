@@ -1,7 +1,6 @@
 package org.ascending.project.repository;
 
 import org.ascending.project.model.Insurance;
-import org.ascending.project.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -19,12 +19,13 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
 
     private static final Logger logger = LoggerFactory.getLogger(InsuranceHibernateDaoImpl.class);
 
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Override
     public void save(Insurance insurance){
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Transaction transaction = null;
 
         try{
@@ -51,8 +52,6 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
         List<Insurance> insurances = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
 
         try{
             Session session = sessionFactory.openSession();
@@ -77,7 +76,6 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
         logger.info("Start to getInsurance from Postgres via Hibernate");
         Insurance insurance = null;
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Transaction transaction = null;
 
         try{
@@ -104,7 +102,6 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
     public void delete(Insurance insurance) {
         logger.info("Start to getInsurance from Postgres via Hibernate");
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Transaction transaction = null;
 
         try{
@@ -123,5 +120,26 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
             }
         }
         logger.info("Hava already delete {}", insurance);
+    }
+
+    @Override
+    public Insurance update(Insurance insurance){
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(insurance);
+            Insurance i = getById(insurance.getId());
+            transaction.commit();
+            session.close();
+            return i;
+        } catch (HibernateException e) {
+            if (transaction != null){
+                transaction.rollback();
+            }
+            logger.error("failed to insert record", e);
+            session.close();
+            return null;
+        }
     }
 }

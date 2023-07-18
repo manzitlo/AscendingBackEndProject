@@ -21,12 +21,13 @@ public class CarHibernateDaoImpl implements ICarDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+
     @Override
     public void save(Car car){
         logger.info("Start to getCar from Postgres via Hibernate");
 
-        try{
-            Session session = sessionFactory.openSession();
+        try(Session session = sessionFactory.openSession()){
+
             session.beginTransaction();
             session.save(car);
             session.getTransaction().commit();
@@ -44,8 +45,8 @@ public class CarHibernateDaoImpl implements ICarDao {
         logger.info("Start to getCar from Postgres via Hibernate");
 
         List<Car> cars = new ArrayList<>();
-        Session session = sessionFactory.openSession();
-        try{
+
+        try(Session session = sessionFactory.openSession()){
 
             String hql = "from Car";
             Query<Car> query = session.createQuery(hql);
@@ -55,7 +56,6 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         } catch (HibernateException e){
             logger.error("Unable to open or close", e);
-            session.close();
         }
 
         logger.info("Get cars {}", cars);
@@ -68,8 +68,7 @@ public class CarHibernateDaoImpl implements ICarDao {
         logger.info("Start to getCar from Postgres via Hibernate");
         Car car = null;
 
-        try{
-            Session session = sessionFactory.openSession();
+        try(Session session = sessionFactory.openSession()){
 
             car = session.get(Car.class, id);
             car.setBrand("brand");
@@ -92,8 +91,8 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         Transaction transaction = null;
 
-        try{
-            Session session = sessionFactory.openSession();
+        try(Session session = sessionFactory.openSession()){
+
             transaction = session.beginTransaction();
             session.delete(car);
             transaction.commit();
@@ -107,6 +106,26 @@ public class CarHibernateDaoImpl implements ICarDao {
             logger.error("Unable to open or close", e);
         }
         logger.info("Hava already delete {}", car);
+    }
+
+    @Override
+    public Car update(Car car){
+        Transaction transaction = null;
+
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            session.update(car);
+            Car ca = getById(car.getId());
+            transaction.commit();
+            session.close();
+            return ca;
+        } catch (HibernateException e){
+            if (transaction != null){
+                transaction.rollback();
+            }
+            logger.error("failed to insert record", e);
+            return null;
+        }
     }
 
 //    @Override

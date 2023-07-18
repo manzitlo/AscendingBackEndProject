@@ -1,17 +1,20 @@
 package org.ascending.project.repository;
 
+import org.ascending.project.ApplicationBootstrap;
 import org.ascending.project.model.Car;
 import org.ascending.project.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
@@ -20,7 +23,8 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ApplicationBootstrap.class)
 public class CarHibernateDaoImplTest {
 
     @Mock  // only includes function signature...
@@ -41,7 +45,7 @@ public class CarHibernateDaoImplTest {
     @Test
     public void getCarsTest_happyPath() {
 
-        CarHibernateDaoImpl carHibernateDao = new CarHibernateDaoImpl();
+        carDao = mock(CarHibernateDaoImpl.class);
 
         //Car(long id, String brand, long year, String model, String color, long insuranceId)
         Car car = new Car(1,"BMW", 2023, "X7", "black", 61);
@@ -55,7 +59,7 @@ public class CarHibernateDaoImplTest {
             when(mockQuery.list()).thenReturn(result);
             doNothing().when(mockSession).close();
 
-            List<Car> actualResult = carHibernateDao.getCars();
+            List<Car> actualResult = carDao.getCars();
             assertEquals(result, actualResult);
         }
     }
@@ -78,6 +82,12 @@ public class CarHibernateDaoImplTest {
 
         }
     }
+
+    @AfterClass
+    public static void tearDown() {
+        HibernateUtil.getSessionFactory().close();
+    }
+
 
 //    JUnit Testing:
 //    private CarHibernateDaoImpl carHibernateDao;

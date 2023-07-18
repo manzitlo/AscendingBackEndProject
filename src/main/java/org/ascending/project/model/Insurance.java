@@ -1,7 +1,6 @@
 package org.ascending.project.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "insurances")
@@ -24,11 +23,20 @@ public class Insurance {
     public void setId(long id){
         this.id = id;
     }
+    public long getId(){
+        return id;
+    }
     public void setCompanyName(String companyName){
         this.companyName = companyName;
     }
+    public String getCompanyName() {
+        return companyName;
+    }
     public void setSepcifications(String sepcifications){
         this.sepcifications = sepcifications;
+    }
+    public String getSepcifications() {
+        return sepcifications;
     }
 
 

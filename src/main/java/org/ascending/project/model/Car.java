@@ -1,5 +1,7 @@
 package org.ascending.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class Car {
     private long insuranceId;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Customer> customers;
 
     public void setId(long id) {
@@ -46,18 +49,33 @@ public class Car {
     public void setBrand(String brand){
         this.brand = brand;
     }
+    public String getBrand() {
+        return brand;
+    }
     public void setYear(Integer year){
         this.year = year;
+    }
+    public long getYear(){
+        return year;
     }
     public void setModel(String model){
         this.model = model;
     }
+    public String getModel(){
+        return model;
+    }
     public void setColor(String color){
         this.color = color;
+    }
+    public String getColor(){
+        return color;
     }
 
     public void setInsuranceId(long insurance_id){
         this.insuranceId = insurance_id;
+    }
+    public long getInsuranceId(){
+        return insuranceId;
     }
     public List<Customer> getCustomers() {
         return customers;
