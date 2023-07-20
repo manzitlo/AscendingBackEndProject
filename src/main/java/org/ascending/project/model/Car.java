@@ -52,7 +52,7 @@ public class Car {
     public String getBrand() {
         return brand;
     }
-    public void setYear(Integer year){
+    public void setYear(long year){
         this.year = year;
     }
     public long getYear(){

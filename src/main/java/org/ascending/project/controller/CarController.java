@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(value = "/car")
 public class CarController {
 
-    private final Logger logger = LoggerFactory.getLogger(org.ascending.project.controller.CarController.class);
+    private final Logger logger = LoggerFactory.getLogger(CarController.class);
 
     @Autowired
     private CarService carService;
@@ -26,7 +26,7 @@ public class CarController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Car getCarById(@PathVariable(name = "id") Long id){
-        logger.info("This is car controller, get by {}", id);
+        logger.info("This is car controller, get by {}", id.toString());
         return carService.getById(id);
     }
 

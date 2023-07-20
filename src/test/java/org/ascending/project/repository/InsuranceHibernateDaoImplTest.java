@@ -32,7 +32,7 @@ public class InsuranceHibernateDaoImplTest {
 
     @After
     public void tearDown(){
-//        insuranceHibernateDao.delete(d1);
+        insuranceHibernateDao.delete(d1);
     }
 
     @Test
