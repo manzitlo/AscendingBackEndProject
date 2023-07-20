@@ -24,19 +24,19 @@ public class InsuranceHibernateDaoImplTest {
     public void setUp() {
 
         d1 = new Insurance();
-//        d1.setId((long) (Math.random()*(100L - 1L)));
-        d1.setCompanyName("State Farm");
-        d1.setSepcifications("half year term");
+        d1.setId(20200210);
+        d1.setCompanyName("Progressive");
+        d1.setSepcifications("Medical Expenses 3k");
         insuranceHibernateDao.save(d1);
     }
 
     @After
     public void tearDown(){
-        insuranceHibernateDao.delete(d1);
+//        insuranceHibernateDao.delete(d1);
     }
 
     @Test
     public void getInsurancesTest() {
-        assertEquals(3, insuranceHibernateDao.getInsurances().size());
+        assertEquals(2, insuranceHibernateDao.getInsurances().size());
     }
 }

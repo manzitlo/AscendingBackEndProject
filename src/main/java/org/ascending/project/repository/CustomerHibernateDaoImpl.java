@@ -52,10 +52,8 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
         try{
 
             Session session = sessionFactory.openSession();
-
             String hql = "from Customer";
             Query<Customer> query = session.createQuery(hql);
-
             customers = query.list();
             session.close();
 
@@ -67,7 +65,7 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     }
 
     @Override
-    public Customer getById(long customer_id){
+    public Customer getById(long customerId){
         logger.info("Start to getCustomer from Postgres via Hibernate");
         Session session = sessionFactory.openSession();
 
@@ -76,13 +74,13 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
         try{
 
             Query<Customer> query = session.createQuery(hql);
-            query.setParameter("Id", customer_id);
+            query.setParameter("Id", customerId);
             Customer result = query.uniqueResult();
             session.close();
             return result;
 
         }catch (HibernateException e){
-            logger.error("Unable to opan or close", e);
+            logger.error("Unable to open or close", e);
             session.close();
             return null;
         }
@@ -92,14 +90,20 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     public void delete(Customer customer){
         logger.info("Start to getCustomer from Postgres via Hibernate");
 
+        Transaction transaction = null;
+
         try{
             Session session = sessionFactory.openSession();
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.delete(customer);
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
 
         } catch (HibernateException e){
+            if (transaction != null){
+                logger.error("Delete transaction failed, Rollback...");
+                transaction.rollback();
+            }
             logger.error("Unable to open or close", e);
         }
         logger.info("Hava already delete {}", customer);

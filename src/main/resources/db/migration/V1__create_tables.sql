@@ -15,7 +15,7 @@ CREATE TABLE cars(
                      insurance_id 		BIGSERIAL NOT NULL
 );
 
-ALTER TABLE cars ADD CONSTRAINT insurance_id_pk PRIMARY KEY (id);
+ALTER TABLE cars ADD CONSTRAINT car_pk PRIMARY KEY (id);
 
 ALTER TABLE cars
     ADD CONSTRAINT cars_insurances_fk FOREIGN KEY (insurance_id)
@@ -33,7 +33,7 @@ CREATE TABLE customers(
 
 );
 
-ALTER TABLE customers ADD CONSTRAINT customer_pk PRIMARY KEY (customer_id);
+ALTER TABLE customers ADD CONSTRAINT customer_id_pk PRIMARY KEY (customer_id);
 
 ALTER TABLE customers
     ADD CONSTRAINT customer_car_fk FOREIGN KEY (car_id)

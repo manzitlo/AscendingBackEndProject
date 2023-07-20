@@ -71,7 +71,6 @@ public class Customer {
         return transaction_date;
     }
 
-
 //    public void setCarId (long car_id){
 //        this.carId = car_id;
 //    }

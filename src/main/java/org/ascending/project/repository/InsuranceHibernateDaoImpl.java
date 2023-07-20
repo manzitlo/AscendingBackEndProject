@@ -74,28 +74,23 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
     // Update
     public Insurance getById(long id) {
         logger.info("Start to getInsurance from Postgres via Hibernate");
-        Insurance insurance = null;
 
-        Transaction transaction = null;
+        Session session = sessionFactory.openSession();
 
+        String hql = "FROM Insurance i where id = :Id";
         try{
-            Session session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-            insurance = session.get(Insurance.class, id);
-            insurance.setSepcifications("Sepcifications");
-            insurance.setCompanyName("company_name");
-            transaction.commit();
+
+            Query<Insurance> query = session.createQuery(hql);
+            query.setParameter("Id",id);
+            Insurance result = query.uniqueResult();
             session.close();
+            return result;
 
         } catch (HibernateException e){
-            if (transaction != null) {
-                logger.error("Update Transaction failed... Rollback ing.");
-                transaction.rollback();
-            }
             logger.error("Unable to open or close", e);
+            session.close();
+            return null;
         }
-        logger.info("Hava already update {}", insurance);
-        return insurance;
     }
 
     @Override

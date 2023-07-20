@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Date;
-
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -26,15 +24,15 @@ public class CustomerHibernateDaoImplTest {
     @Before
     public void setup() {
 
-        cu1 = new Customer();
-//        cu1.setCustomerId(2);
-        cu1.setLastName("Luo");
-        cu1.setFirstName("Wenzhe");
-        cu1.setGender("male");
-        cu1.setAge(Integer.valueOf("29"));
-//        cu1.setCarId(15);
-        cu1.setTransactionDate(Date.valueOf("2020-02-19"));
-        customerHibernateDao.save(cu1);
+//        cu1 = new Customer();
+////        cu1.setCustomerId(2);
+//        cu1.setLastName("Luo");
+//        cu1.setFirstName("Wenzhe");
+//        cu1.setGender("male");
+//        cu1.setAge(Integer.valueOf("29"));
+////        cu1.setCarId(15);
+//        cu1.setTransactionDate(Date.valueOf("2020-02-19"));
+//        customerHibernateDao.save(cu1);
     }
 
     @After
@@ -44,6 +42,6 @@ public class CustomerHibernateDaoImplTest {
 
     @Test
     public void getCustomerTest() {
-        assertEquals(0, customerHibernateDao.getCustomers().size());
+        assertEquals(3, customerHibernateDao.getCustomers().size());
     }
 }

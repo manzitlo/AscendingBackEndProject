@@ -11,26 +11,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Transactional
 public class CarHibernateDaoImpl implements ICarDao {
     public static final Logger logger = LoggerFactory.getLogger(CarHibernateDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
-
-
     @Override
     public void save(Car car){
         logger.info("Start to getCar from Postgres via Hibernate");
 
-        try(Session session = sessionFactory.openSession()){
+        Transaction transaction = null;
 
-            session.beginTransaction();
+        try{
+            Session session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             session.save(car);
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
 
         } catch (HibernateException e){
@@ -45,8 +47,9 @@ public class CarHibernateDaoImpl implements ICarDao {
         logger.info("Start to getCar from Postgres via Hibernate");
 
         List<Car> cars = new ArrayList<>();
+        Session session = sessionFactory.openSession();
 
-        try(Session session = sessionFactory.openSession()){
+        try{
 
             String hql = "from Car";
             Query<Car> query = session.createQuery(hql);
@@ -66,23 +69,22 @@ public class CarHibernateDaoImpl implements ICarDao {
     // Update
     public Car getById(long id) {
         logger.info("Start to getCar from Postgres via Hibernate");
-        Car car = null;
+        Session session = sessionFactory.openSession();
+        String hql = "FROM Car ca where id = :Id";
 
-        try(Session session = sessionFactory.openSession()){
+        try{
 
-            car = session.get(Car.class, id);
-            car.setBrand("brand");
-            car.setYear(Long.parseLong("year"));
-            car.setModel("model");
-            car.setColor("color");
-//            car.setInsuranceId(Long.parseLong("insurance_id"));
+            Query<Car> query = session.createQuery(hql);
+            query.setParameter("Id", id);
+            Car result = query.uniqueResult();
             session.close();
+            return result;
 
         } catch (HibernateException e){
             logger.error("Unable to open or close", e);
+            session.close();
+            return null;
         }
-        logger.info("Hava already update {}", car);
-        return car;
     }
 
     @Override
@@ -91,7 +93,9 @@ public class CarHibernateDaoImpl implements ICarDao {
 
         Transaction transaction = null;
 
-        try(Session session = sessionFactory.openSession()){
+        Session session = sessionFactory.openSession();
+
+        try{
 
             transaction = session.beginTransaction();
             session.delete(car);
@@ -111,8 +115,9 @@ public class CarHibernateDaoImpl implements ICarDao {
     @Override
     public Car update(Car car){
         Transaction transaction = null;
+        Session session = sessionFactory.openSession();
 
-        try(Session session = sessionFactory.openSession()){
+        try{
             transaction = session.beginTransaction();
             session.update(car);
             Car ca = getById(car.getId());
