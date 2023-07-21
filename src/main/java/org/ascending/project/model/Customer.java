@@ -29,6 +29,8 @@ public class Customer {
 //    @Column(name = "car_id")
 //    private long carId;
 
+
+
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
@@ -79,6 +81,7 @@ public class Customer {
         this.car = car;
     }
 
-
-
+    public Car getCar() {  //*******
+        return car;
+    }
 }
