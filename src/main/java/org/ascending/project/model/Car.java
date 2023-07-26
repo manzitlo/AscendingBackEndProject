@@ -3,7 +3,7 @@ package org.ascending.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "cars")
@@ -38,7 +38,7 @@ public class Car {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Customer> customers;
+    private Set<Customer> customers;
 
     public void setId(long id) {
         this.id = id;
@@ -77,11 +77,11 @@ public class Car {
     public long getInsuranceId(){
         return insuranceId;
     }
-    public List<Customer> getCustomers() {
+    public Set<Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(List<Customer> customers) {
+    public void setCustomers(Set<Customer> customers) {
         this.customers = customers;
     }
 }

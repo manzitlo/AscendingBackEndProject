@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(value = "/car")
 public class CarController {
 
-    private final Logger logger = LoggerFactory.getLogger(CarController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private CarService carService;

@@ -3,6 +3,8 @@ package org.ascending.project.model;
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "roles")
 public class Role {
 
     public long getId() {
@@ -39,49 +41,49 @@ public class Role {
     @Column(name = "allowed_resource")
     private String allowedResource;
 
-    public String getAllowedRead() {
+    public Boolean getAllowedRead() {
         return allowedRead;
     }
 
-    public void setAllowedRead(String allowedRead) {
+    public void setAllowedRead(Boolean allowedRead) {
         this.allowedRead = allowedRead;
     }
 
     @Column(name = "allowed_read")
-    private String allowedRead;
+    private Boolean allowedRead;
 
-    public String getAllowedCreate() {
+    public Boolean getAllowedCreate() {
         return allowedCreate;
     }
 
-    public void setAllowedCreate(String allowedCreate) {
+    public void setAllowedCreate(Boolean allowedCreate) {
         this.allowedCreate = allowedCreate;
     }
 
     @Column(name = "allowed_create")
-    private String allowedCreate;
+    private Boolean allowedCreate;
 
-    public String getAllowedUpdate() {
+    public Boolean getAllowedUpdate() {
         return allowedUpdate;
     }
 
-    public void setAllowedUpdate(String allowedUpdate) {
+    public void setAllowedUpdate(Boolean allowedUpdate) {
         this.allowedUpdate = allowedUpdate;
     }
 
     @Column(name = "allowed_update")
-    private String allowedUpdate;
+    private Boolean allowedUpdate;
 
-    public String getAllowedDelete() {
+    public Boolean getAllowedDelete() {
         return allowedDelete;
     }
 
-    public void setAllowedDelete(String allowedDelete) {
+    public void setAllowedDelete(Boolean allowedDelete) {
         this.allowedDelete = allowedDelete;
     }
 
     @Column(name = "allowed_delete")
-    private String allowedDelete;
+    private Boolean allowedDelete;
 
     @ManyToMany(mappedBy = "roles")
     private List<User> users;

@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(value = "/insurance")
 public class InsuranceController {
 
-    private final Logger logger = LoggerFactory.getLogger(CarController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private InsuranceService insuranceService;
@@ -44,4 +44,6 @@ public class InsuranceController {
         logger.info("Post a new object {}", insurance.getSepcifications());
         insuranceService.save(insurance);
     }
+
+
 }

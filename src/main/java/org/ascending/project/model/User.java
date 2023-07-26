@@ -1,8 +1,12 @@
 package org.ascending.project.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
     public long getId() {
         return id;
@@ -32,7 +36,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = DigestUtils.md5Hex(password.trim());
     }
 
     @Column(name = "password")

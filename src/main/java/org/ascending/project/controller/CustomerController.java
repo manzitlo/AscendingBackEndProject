@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/customer")
 public class CustomerController {
-    private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private CustomerService customerService;
