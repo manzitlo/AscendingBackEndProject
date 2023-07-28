@@ -10,7 +10,7 @@ CREATE TABLE cars(
                      id					BIGSERIAL NOT NULL,
                      brand				VARCHAR(20) not null,
                      year				BIGSERIAL not null,
-                     model				VARCHAR(10) not null unique,
+                     model				VARCHAR(10) not null,
                      color				VARCHAR(10),
                      insurance_id 		BIGSERIAL NOT NULL
 );

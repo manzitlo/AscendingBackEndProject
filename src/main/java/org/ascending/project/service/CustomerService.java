@@ -26,6 +26,7 @@ public class CustomerService {
 //    }
 
     public void delete(Customer customer){
+        customerDao.delete(customer);
     }
 
     public Customer getById(long customer_id){

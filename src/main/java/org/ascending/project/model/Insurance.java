@@ -16,10 +16,6 @@ public class Insurance {
     @Column(name = "sepcifications")
     private String sepcifications;
 
-//    @ManyToOne
-//    @JoinColumn(name = "car_id")
-//    private Car car;
-
     public void setId(long id){
         this.id = id;
     }

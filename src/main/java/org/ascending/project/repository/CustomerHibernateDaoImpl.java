@@ -28,18 +28,24 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     public void save(Customer customer){
 
         logger.info("Start to save Customer to Postgres via Hibernate");
-
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
         try{
-            Session session = sessionFactory.openSession();
+
             transaction = session.beginTransaction();
             session.save(customer);
             transaction.commit();
             session.close();
 
         } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
+            if(transaction != null) {
+                logger.error("Save transaction failed, rolling back");
+                transaction.rollback();
+            }
+            logger.error("Open session exception or close session exception", e);
+            session.close();
+            throw e;
         }
         logger.info("Have already saved {}", customer);
     }
@@ -91,11 +97,11 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
     @Override
     public void delete(Customer customer){
         logger.info("Start to getCustomer from Postgres via Hibernate");
-
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
         try{
-            Session session = sessionFactory.openSession();
+
             transaction = session.beginTransaction();
             session.delete(customer);
             transaction.commit();
@@ -107,6 +113,8 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
                 transaction.rollback();
             }
             logger.error("Unable to open or close", e);
+            session.close();
+            throw e;
         }
         logger.info("Hava already delete {}", customer);
 
@@ -119,8 +127,9 @@ public class CustomerHibernateDaoImpl implements ICustomerDao{
         try {
             transaction = session.beginTransaction();
             session.update(customer);
-            Customer c = getById(customer.getCustomerId());
             transaction.commit();
+            Customer c = getById(customer.getCustomerId());
+
             session.close();
             return c;
         } catch (HibernateException e) {

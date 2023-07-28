@@ -27,23 +27,21 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
     @Override
     public void save(Insurance insurance){
         logger.info("Start to getInsurance from Postgres via Hibernate");
-
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
-
         try{
-            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(insurance);
             transaction.commit();
             session.close();
-
-
         } catch (HibernateException e){
-            if (transaction != null){
-                logger.error("Save Transaction failed... Rollback ing.");
+            if(transaction != null) {
+                logger.error("Save transaction failed, rolling back");
                 transaction.rollback();
             }
-            logger.error("Unable to open or close", e);
+            logger.error("Open session exception or close session exception", e);
+            session.close();
+            throw e;
         }
         logger.info("Hava already save {}", insurance);
     }
@@ -98,11 +96,10 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
     @Override
     public void delete(Insurance insurance) {
         logger.info("Start to getInsurance from Postgres via Hibernate");
-
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
         try{
-            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.delete(insurance);
             transaction.commit();
@@ -115,6 +112,8 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
                 logger.error("Delete Transaction failed... Rollback ing.");
                 transaction.rollback();
             }
+            session.close();
+            throw e;
         }
         logger.info("Hava already delete {}", insurance);
     }
@@ -126,8 +125,9 @@ public class InsuranceHibernateDaoImpl implements IInsuranceDao{
         try {
             transaction = session.beginTransaction();
             session.update(insurance);
-            Insurance i = getById(insurance.getId());
             transaction.commit();
+            Insurance i = getById(insurance.getId());
+
             session.close();
             return i;
         } catch (HibernateException e) {

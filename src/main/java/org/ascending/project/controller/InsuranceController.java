@@ -5,6 +5,8 @@ import org.ascending.project.service.InsuranceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,14 +22,21 @@ public class InsuranceController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Insurance> getInsurances() {
+        logger.info("This is insurance controller...");
         List<Insurance> insurances = insuranceService.getInsurances();
         return insurances;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Insurance getInsuranceById(@PathVariable(name = "id") Long id){
-        logger.info("This is car controller, get by {}", id.toString());
-        return insuranceService.getById(id);
+    public ResponseEntity getInsuranceById(@PathVariable(name = "id") Long id){
+        Insurance insurance = insuranceService.getById(id);
+        if (insurance == null) {
+            logger.info("Insurance Not found...");
+            return new ResponseEntity<>("Insurance NOT FOUND", HttpStatus.NOT_FOUND);
+        }
+        logger.info("This is insurance controller, get by {}", id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(insurance);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH, params = {"id"})
@@ -40,10 +49,22 @@ public class InsuranceController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public void create(@RequestBody Insurance insurance) {
-        logger.info("Post a new object {}", insurance.getSepcifications());
+    public ResponseEntity<String> save(@RequestBody Insurance insurance) {
+        logger.info("Post a new object {}", insurance.getId());
         insuranceService.save(insurance);
+        return new ResponseEntity<>("Insurance created", HttpStatus.OK);
     }
 
-
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+        logger.info("Delete insurance with ID: {}", id);
+        Insurance insurance = insuranceService.getById(id);
+        if (insurance == null) {
+            // If the car with the given ID doesn't exist, return a not found response.
+            return new ResponseEntity<>("Insurance not found", HttpStatus.NOT_FOUND);
+        }
+        insuranceService.delete(insurance);
+        // If the car is successfully deleted, return a success response.
+        return new ResponseEntity<>("Insurance deleted successfully", HttpStatus.OK);
+    }
 }

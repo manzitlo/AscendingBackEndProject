@@ -22,9 +22,8 @@ public class InsuranceService {
     }
 
     public void delete(Insurance insurance){
-
+        insuranceDao.delete(insurance);
     }
-
     public Insurance getById(long id){
         return insuranceDao.getById(id);
     }

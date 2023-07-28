@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class CarService {
+
     @Autowired
     private ICarDao carDao;
 
@@ -24,6 +25,7 @@ public class CarService {
 //    }
 
     public void delete(Car car){
+        carDao.delete(car);
     }
 
     public Car getById(long id){

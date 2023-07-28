@@ -11,14 +11,6 @@ public class Car {
 
     public Car() {}
 
-    public Car(long id, String brand, long year, String model, String color, long insuranceId) {
-        this.id = id;
-        this.brand = brand;
-        this.year = year;
-        this.model = model;
-        this.color = color;
-        this.insuranceId = insuranceId;
-    }
 
 
     @Id

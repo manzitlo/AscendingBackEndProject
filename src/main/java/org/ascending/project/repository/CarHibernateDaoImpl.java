@@ -25,18 +25,23 @@ public class CarHibernateDaoImpl implements ICarDao {
     @Override
     public void save(Car car){
         logger.info("Start to getCar from Postgres via Hibernate");
-
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
         try{
-            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(car);
             transaction.commit();
             session.close();
 
         } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
+            if(transaction != null) {
+                logger.error("Save transaction failed, rolling back");
+                transaction.rollback();
+            }
+            logger.error("Open session exception or close session exception", e);
+            session.close();
+            throw e;
         }
         logger.info("Hava already save {}", car);
     }
@@ -108,6 +113,8 @@ public class CarHibernateDaoImpl implements ICarDao {
                 transaction.rollback();
             }
             logger.error("Unable to open or close", e);
+            session.close();
+            throw e;
         }
         logger.info("Hava already delete {}", car);
     }
@@ -120,8 +127,8 @@ public class CarHibernateDaoImpl implements ICarDao {
         try{
             transaction = session.beginTransaction();
             session.update(car);
-            Car ca = getById(car.getId());
             transaction.commit();
+            Car ca = getById(car.getId());
             session.close();
             return ca;
         } catch (HibernateException e){
@@ -133,10 +140,5 @@ public class CarHibernateDaoImpl implements ICarDao {
         }
     }
 
-//    @Override
-//    public Car getCarEagerBy(Long id){
-//        String hql = "FROM Car c LEFT JOIN FETCH c.customers where c.id :Id";
-//        Session
-//    }
 }
 
