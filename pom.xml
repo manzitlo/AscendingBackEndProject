@@ -5,7 +5,7 @@
   <groupId>org.ascending.project</groupId>
   <artifactId>AscendingProject</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <name>AscendingProject</name>
   <url>http://maven.apache.org</url>
@@ -234,3 +234,6 @@
   </build>
 
 </project>
+
+
+

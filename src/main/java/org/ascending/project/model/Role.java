@@ -88,4 +88,28 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
+    public void setAllowedRead(boolean allowedRead) {
+        this.allowedRead = allowedRead;
+    }
+    public boolean isAllowedRead() {
+        return allowedRead;
+    }
+    public void setAllowedCreate(boolean allowedCreate) {
+        this.allowedCreate = allowedCreate;
+    }
+    public boolean isAllowedCreate() {
+        return allowedCreate;
+    }
+    public void setAllowedUpdate(boolean allowedUpdate) {
+        this.allowedUpdate = allowedUpdate;
+    }
+    public boolean isAllowedUpdate() {
+        return allowedUpdate;
+    }
+    public void setAllowedDelete(boolean allowedDelete) {
+        this.allowedDelete = allowedDelete;
+    }
+    public boolean isAllowedDelete() {
+        return allowedDelete;
+    }
 }

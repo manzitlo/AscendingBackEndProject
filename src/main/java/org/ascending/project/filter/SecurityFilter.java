@@ -43,13 +43,14 @@ public class SecurityFilter implements Filter {
             ((HttpServletResponse)servletResponse).sendError(statusCode);
         }
     }
-
     private int authorization(HttpServletRequest req) {
         int statusCode = HttpServletResponse.SC_UNAUTHORIZED;
         String uri = req.getRequestURI();
         if (IGNORED_PATH.contains(uri)){
             return HttpServletResponse.SC_ACCEPTED;
         }
+
+        String verb = req.getMethod();
 
         try {
             String token = req.getHeader("Authorization").replaceAll("^(.*?)", "");
@@ -62,6 +63,22 @@ public class SecurityFilter implements Filter {
                 User u = userService.getUserById(Long.valueOf(claims.getId()));
                 if(u != null){
                     statusCode = HttpServletResponse.SC_ACCEPTED;
+                }
+            }
+
+            String allowedResources = "/";
+            switch (verb) {
+                case "GET": allowedResources = (String) claims.get("allowedResources");
+                case "POST": allowedResources = (String) claims.get("allowedCreateResources");
+                case "PUT": allowedResources = (String) claims.get("allowedUpdateResources");
+                case "DELETE": allowedResources = (String) claims.get("allowedDeleteResources");
+            }
+
+
+            for(String s : allowedResources.split(",")) {
+                if(uri.trim().toLowerCase().startsWith(s.trim().toLowerCase())) {
+                    statusCode = HttpServletResponse.SC_ACCEPTED;
+                    break;
                 }
             }
 

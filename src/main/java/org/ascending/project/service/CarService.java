@@ -20,10 +20,6 @@ public class CarService {
         return carDao.getCars();
     }
 
-//    public Customer update(Customer customer){
-//        return customerDao.getById(customer.getId());
-//    }
-
     public void delete(Car car){
         carDao.delete(car);
     }

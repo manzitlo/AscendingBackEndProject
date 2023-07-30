@@ -4,13 +4,12 @@ import org.ascending.project.model.User;
 import org.ascending.project.service.JWTService;
 import org.ascending.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = {"/auth"})
@@ -25,11 +24,12 @@ public class AuthController {
     public ResponseEntity userLogin(@RequestBody User user){
 
         try{
-//            String digestPassword = DigestUtils.md2Hex(password.trim());
-//            User user = userService.getUserByCredentials(userNameOrEmail, digestPassword);
             User u = userService.getUserByCredentials(user.getEmail(), user.getPassword());
             if (u == null) {
-                return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
+
+//    one way:  return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
+                // another way:
+                return new ResponseEntity<>("401 Unauthorized", HttpStatus.UNAUTHORIZED);
             }
             return ResponseEntity.ok().body(jwtService.generateToken(u));
         } catch (Exception e){
