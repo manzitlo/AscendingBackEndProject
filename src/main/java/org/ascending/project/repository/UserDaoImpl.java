@@ -5,6 +5,7 @@ import org.ascending.project.repository.exception.UserNotFoundException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,6 @@ public class UserDaoImpl implements IUserDao{
     private SessionFactory sessionFactory;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public boolean save(User user){
-        return false;
-    }
     @Override
     public User getUserByEmail(String email) {
         return null;
@@ -60,6 +57,25 @@ public class UserDaoImpl implements IUserDao{
             logger.error("error: {}", e.getMessage());
             throw new UserNotFoundException("Can't find user record with email= " + email + " , password= " + password);
         }
+    }
+
+    @Override
+    public User saveUser(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(user);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error("Error while saving user: {}", e.getMessage());
+        } finally {
+            session.close();
+        }
+        return user;
     }
 
 }

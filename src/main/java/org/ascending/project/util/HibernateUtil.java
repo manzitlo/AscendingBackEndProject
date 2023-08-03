@@ -21,7 +21,7 @@ public class HibernateUtil {
         if (sessionFactory == null) {
             try {
 
-                String[] modelPackages = {"org.ascending.project.model"}; //
+                String[] modelPackages = {"org.ascending.project.model"}; // right address
                 String dbDriver = "org.postgresql.Driver";
                 String dbDialect = "org.hibernate.dialect.PostgreSQL9Dialect";
                 String dbUrl = "jdbc:postgresql://localhost:5431/Car_DB";
@@ -52,12 +52,5 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
-//    public static void main(String[] args){
-//        SessionFactory sf = HibernateUtil.getSessionFactory();
-//        logger.info("Success generate sf, {}", sf.hashCode());
-//        Session s = sf.openSession();
-//        logger.info("Got a session to connect to DB~");
-//        s.close();
-//    }
 }
 

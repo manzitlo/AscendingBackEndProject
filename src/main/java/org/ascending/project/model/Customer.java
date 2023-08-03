@@ -1,8 +1,8 @@
 package org.ascending.project.model;
 
 import javax.persistence.*;
-
 import java.sql.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
@@ -73,15 +73,42 @@ public class Customer {
         return transaction_date;
     }
 
-//    public void setCarId (long car_id){
-//        this.carId = car_id;
-//    }
-
     public void setCar(Car car) {
         this.car = car;
     }
 
     public Car getCar() {  //*******
         return car;
+    }
+
+
+    @Override
+    public int hashCode(){
+
+//        final int prime = 31;
+//        int result = 1;
+//        result = prime * result + (int)customer_id;
+//        result = prime * result + first_name.hashCode();
+//        result = prime * result + last_name.hashCode();
+//        result = prime * result + gender.hashCode();
+//        result = prime * result + transaction_date.hashCode();
+//        result = prime * result + (int)age;
+//        return result;
+
+        return Objects.hash(customer_id,first_name,last_name,gender,transaction_date,age);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+        return customer_id == customer.customer_id &&
+                first_name.equals(customer.first_name) &&
+                last_name.equals(customer.last_name) &&
+                age == customer.age &&
+                transaction_date.equals(customer.transaction_date) &&
+                gender.equals(customer.gender);
     }
 }
