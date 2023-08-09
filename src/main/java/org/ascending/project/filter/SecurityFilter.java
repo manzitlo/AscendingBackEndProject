@@ -31,7 +31,7 @@ public class SecurityFilter implements Filter {
 
     private static final Set<String> ALLOWED_PATHS = new HashSet<>(Arrays.asList("", "/login", "logger", "register"));
 
-    private static final Set<String> IGNORED_PATH = new HashSet<>(Arrays.asList("/auth"));
+    private static final Set<String> IGNORED_PATH = new HashSet<>(Arrays.asList("/auth", "/signup"));
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         logger.info("Start to do authorization");
