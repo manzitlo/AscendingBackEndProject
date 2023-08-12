@@ -40,55 +40,67 @@ public class SecurityFilter implements Filter {
         if (statusCode == HttpServletResponse.SC_ACCEPTED){
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            ((HttpServletResponse)servletResponse).sendError(statusCode);
+            ((HttpServletResponse) servletResponse).sendError(statusCode);
         }
     }
     private int authorization(HttpServletRequest req) {
-        int statusCode = HttpServletResponse.SC_UNAUTHORIZED;
+
         String uri = req.getRequestURI();
         if (IGNORED_PATH.contains(uri)){
             return HttpServletResponse.SC_ACCEPTED;
         }
 
-        String verb = req.getMethod();
+        String token = req.getHeader("Authorization");
+        if (token == null || token.isEmpty()) {
+            logger.warn("Missing Authorization header");
+            return HttpServletResponse.SC_UNAUTHORIZED;
+        }
+
+        Claims claims;
 
         try {
-            String token = req.getHeader("Authorization").replaceAll("^(.*?)", "");
-            if (token == null || token.isEmpty()) return statusCode;
-
-            Claims claims = jwtService.decryptToken(token);
-            logger.info("==== after parsing JWT token, claims.getId()={}", claims.getId());
-
-            if (claims.getId() != null) {
-                User u = userService.getUserById(Long.valueOf(claims.getId()));
-                if(u != null){
-                    statusCode = HttpServletResponse.SC_ACCEPTED;
-                }
-            }
-
-            String allowedResources = "/";
-            switch (verb) {
-                case "GET": allowedResources = (String) claims.get("allowedResources"); break;
-
-                case "POST": allowedResources = (String) claims.get("allowedCreateResources"); break;
-
-                case "PUT": allowedResources = (String) claims.get("allowedUpdateResources"); break;
-
-                case "DELETE": allowedResources = (String) claims.get("allowedDeleteResources"); break;
-            }
-
-
-            for(String s : allowedResources.split(",")) {
-                if(uri.trim().toLowerCase().startsWith(s.trim().toLowerCase())) {
-                    statusCode = HttpServletResponse.SC_ACCEPTED;
-                    break;
-                }
-            }
-
-        } catch (Exception e){
-            logger.info("Cannot get token");
+            claims = jwtService.decryptToken(token);
+        } catch (Exception e) {
+            logger.error("Error decrypting token", e);
+            return HttpServletResponse.SC_UNAUTHORIZED;
         }
-        return statusCode;
+
+        logger.info("After parsing JWT token, claims.getId()={}", claims.getId());
+        if (claims.getId() == null) {
+            logger.warn("No ID in token claims");
+            return HttpServletResponse.SC_UNAUTHORIZED;
+        }
+
+        User u = userService.getUserById(Long.valueOf(claims.getId()));
+        if (u == null) {
+            logger.warn("No user found with ID {}", claims.getId());
+            return HttpServletResponse.SC_UNAUTHORIZED;
+        }
+
+        String allowedResources = getAllowResourcesBasedOnVerb(req.getMethod(), claims);
+        for (String s : allowedResources.split(",")) {
+            if (uri.trim().toLowerCase().startsWith(s.trim().toLowerCase())) {
+                return HttpServletResponse.SC_ACCEPTED;
+            }
+        }
+
+        logger.warn("User {} not authorized for resource {}", u.getId(), uri);
+        return HttpServletResponse.SC_FORBIDDEN;
+    }
+
+    private String getAllowResourcesBasedOnVerb(String verb, Claims claims) {
+        switch (verb) {
+            case "GET":
+                return (String) claims.get("allowedResources");
+            case "POST":
+                return (String) claims.get("allowedCreateResources");
+            case "PUT":
+                return (String) claims.get("allowedUpdateResources");
+            case "DELETE":
+                return (String) claims.get("allowedDeleteResources");
+            default:
+                return "/";
+        }
     }
 
     @Override

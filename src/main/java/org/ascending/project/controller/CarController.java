@@ -45,7 +45,7 @@ public class CarController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public Car updateCar(@PathVariable("id") Long id, @RequestParam(value = "brand", required=false) String brand, @RequestParam(value = "model", required=false) String model){
-        logger.info("pass in variable id: {} and brand: {}", id.toString(), brand);
+        logger.info("pass in variable id: {} and brand(model): {}({})", id.toString(), brand, model);
         Car ca = carService.getById(id);
         if (brand != null) {
             ca.setBrand(brand);

@@ -1,0 +1,1 @@
+ALTER TABLE users_roles ADD CONSTRAINT users_roles_unique UNIQUE (user_id, role_id);

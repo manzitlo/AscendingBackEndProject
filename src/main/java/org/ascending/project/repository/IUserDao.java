@@ -1,4 +1,5 @@
 package org.ascending.project.repository;
+
 import org.ascending.project.model.User;
 public interface IUserDao {
 
@@ -6,4 +7,6 @@ public interface IUserDao {
     User getUserById(Long id);
     User getUserByCredentials(String email, String password) throws Exception;
     User saveUser(User user);
+    User update(User user);
+    void delete(User user);
 }

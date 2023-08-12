@@ -26,7 +26,6 @@ public class InsuranceController {
         List<Insurance> insurances = insuranceService.getInsurances();
         return insurances;
     }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity getInsuranceById(@PathVariable(name = "id") Long id){
         Insurance insurance = insuranceService.getById(id);
@@ -60,11 +59,11 @@ public class InsuranceController {
         logger.info("Delete insurance with ID: {}", id);
         Insurance insurance = insuranceService.getById(id);
         if (insurance == null) {
-            // If the car with the given ID doesn't exist, return a not found response.
+
             return new ResponseEntity<>("Insurance not found", HttpStatus.NOT_FOUND);
         }
         insuranceService.delete(insurance);
-        // If the car is successfully deleted, return a success response.
+
         return new ResponseEntity<>("Insurance deleted successfully", HttpStatus.OK);
     }
 }
