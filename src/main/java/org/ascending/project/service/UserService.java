@@ -1,15 +1,15 @@
 package org.ascending.project.service;
 
-import org.ascending.project.model.Role;
 import org.ascending.project.model.User;
 import org.ascending.project.repository.IRoleDao;
 import org.ascending.project.repository.IUserDao;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -18,32 +18,29 @@ public class UserService {
 
     @Autowired
     private IUserDao userDao;
+
     @Autowired
     private IRoleDao roleDao;
+
+    @Autowired
+    private SessionFactory sessionFactory; // Inject the SessionFactory
 
     public User getUserByCredentials(String email, String password) throws Exception {
         return userDao.getUserByCredentials(email, password);
     }
+
     public User getUserById(Long id) {
         return userDao.getUserById(id);
     }
+
     public User getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }
-    @Transactional
-    public User saveUser(User user) {
 
+    public User saveUser(User user, Session session) throws Exception {
         User savedUser;
         try {
             savedUser = userDao.saveUser(user);
-            Role defaultRole = roleDao.getRoleByName("user");
-            if (defaultRole != null) {
-                roleDao.assignRoleToUser(savedUser, defaultRole);
-                savedUser.getRoles().add(defaultRole);
-                userDao.saveUser(savedUser);
-            } else {
-                logger.error("Default 'user' role does not exist.");
-            }
         } catch (Exception e) {
             logger.error("Error saving user: {}", e.getMessage());
             throw e;
@@ -51,11 +48,44 @@ public class UserService {
         return savedUser;
     }
 
-    public User update(User user){
-        return userDao.update(user);
-    }
-    public void delete(User user){
-        userDao.delete(user);
+
+
+    public User update(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        User updatedUser = null;
+        try {
+            transaction = session.beginTransaction();
+
+            updatedUser = userDao.update(user);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            logger.error("Error updating user: {}", e.getMessage());
+            throw e;
+        } finally {
+            session.close();
+        }
+        return updatedUser;
     }
 
+    public void delete(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+
+            userDao.delete(user);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            logger.error("Error deleting user: {}", e.getMessage());
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 }
+

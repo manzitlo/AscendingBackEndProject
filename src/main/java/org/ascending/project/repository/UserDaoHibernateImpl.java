@@ -5,18 +5,15 @@ import org.ascending.project.repository.exception.UserNotFoundException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-
-
 @Repository
-@Transactional
-public class UserDaoHibernateImpl implements IUserDao{
+public class UserDaoHibernateImpl implements IUserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -24,21 +21,86 @@ public class UserDaoHibernateImpl implements IUserDao{
 
     @Override
     public User getUserByEmail(String email) {
-        return null;
+
+        Session s = sessionFactory.getCurrentSession();
+        Transaction tx = null;
+        try {
+            tx = s.beginTransaction();
+            String hql = "FROM User d where email= :email";
+            Query<User> query = s.createQuery(hql, User.class);
+            query.setParameter("email", email);
+            User user = query.uniqueResult();
+            tx.commit();
+            return user;
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error retrieving user by email.", e);
+        }
     }
 
     @Override
     public User getUserById(Long id) {
-        logger.info("Retrieving user by id: {}", id);
         Session s = sessionFactory.getCurrentSession();
-        String hql = "FROM User d where id= :Id";
-        Query<User> query = s.createQuery(hql);
-        query.setParameter("Id", id);
-        User user = query.uniqueResult();
-        if(user == null) {
-            logger.warn("No user found with id: {}", id);
+        Transaction tx = null;
+        try {
+            tx = s.beginTransaction();
+            String hql = "FROM User d where id= :id";
+            Query<User> query = s.createQuery(hql, User.class);
+            query.setParameter("id", id);
+            User user = query.uniqueResult();
+            tx.commit();
+            return user;
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error retrieving user by id.", e);
         }
-        return user;
+    }
+
+    @Override
+    public User saveUser(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.saveOrUpdate(user);
+            tx.commit();
+            logger.info("User saved successfully with id: {}", user.getId());
+            return user;
+        } catch (RuntimeException e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error saving user.", e);
+        }
+    }
+
+    @Override
+    public User update(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(user);
+            tx.commit();
+            logger.info("User with id: {} updated successfully", user.getId());
+            return getUserById(user.getId());
+        } catch (RuntimeException e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error updating user.", e);
+        }
+    }
+
+    @Override
+    public void delete(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(user);
+            tx.commit();
+            logger.info("User with id: {} deleted successfully", user.getId());
+        } catch (RuntimeException e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error deleting user.", e);
+        }
     }
 
     @Override
@@ -46,54 +108,20 @@ public class UserDaoHibernateImpl implements IUserDao{
         logger.info("Retrieving user by identifier: {}", identifier);
 
         String hql = "FROM User as u where (lower(u.email) = :identifier OR lower(u.name) = :identifier) and u.password = :password";
-        Session session = null;
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = null;
         try {
-            session = sessionFactory.getCurrentSession();
-            Query<User> query = session.createQuery(hql);
+            tx = session.beginTransaction();
+            Query<User> query = session.createQuery(hql, User.class);
             query.setParameter("identifier", identifier.toLowerCase().trim());
             query.setParameter("password", password);
             User user = query.uniqueResult();
-
-            if(user == null) {
-                logger.warn("No user found with identifier: {} and given password.", identifier);
-                throw new UserNotFoundException("No user found with identifier: " + identifier);
-            }
+            tx.commit();
             return user;
-        } catch (HibernateException e) {
-            logger.error("Error retrieving user with identifier: {}. Error: {}", identifier, e.getMessage());
-            throw e;
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
+        } catch (RuntimeException e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error retrieving user by credentials.", e);
         }
-    }
-
-
-    @Override
-    public User saveUser(User user) {
-        logger.info("Saving user: {}", user);
-        Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(user);
-        logger.info("User saved successfully with id: {}", user.getId());
-        return user;
-    }
-
-    @Override
-    public User update(User user) {
-        logger.info("Updating user with id: {}", user.getId());
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
-        logger.info("User with id: {} updated successfully", user.getId());
-        return getUserById(user.getId());
-    }
-
-    @Override
-    public void delete(User user) {
-        logger.info("Deleting user with id: {}", user.getId());
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(user);
-        logger.info("User with id: {} deleted successfully", user.getId());
     }
 
 }

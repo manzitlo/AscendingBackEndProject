@@ -14,4 +14,5 @@ public class HibernateConfig {
     public SessionFactory getHibernateSessionFactory() {
         return HibernateUtil.getSessionFactory();
     }
+
 }

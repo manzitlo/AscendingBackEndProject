@@ -70,7 +70,7 @@ public class Role {
         this.allowedDelete = allowedDelete;
     }
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private List<User> users = new ArrayList<>();
 
     public List<User> getUsers() {
