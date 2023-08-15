@@ -47,28 +47,20 @@ public class CarHibernateDaoImpl implements ICarDao {
     }
 
     @Override
-    public List<Car> getCars(){
-
+    public List<Car> getCars() {
         logger.info("Start to getCar from Postgres via Hibernate");
-
         List<Car> cars = new ArrayList<>();
-        Session session = sessionFactory.openSession();
-
-        try{
-
+        try (Session session = sessionFactory.openSession()) {
             String hql = "from Car";
             Query<Car> query = session.createQuery(hql);
-
             cars = query.list();
-            session.close();
-
-        } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
+        } catch (HibernateException e) {
+            logger.error("Unable to fetch cars", e);
         }
-
         logger.info("Get cars {}", cars);
         return cars;
     }
+
 
     @Override
     // Update

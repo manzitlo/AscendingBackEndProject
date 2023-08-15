@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class JWTService {
-    private final String SECRET = "WENZHE-Ascending";  // put it into VM option and read it out...
+    private final String SECRET = System.getProperty("jwt.secret");
     private final String ISSUER = "org.ascending";
     private final long EXPIRATION_TIME = 86400 * 1000;
 

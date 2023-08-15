@@ -39,6 +39,25 @@ public class UserDaoHibernateImpl implements IUserDao {
     }
 
     @Override
+    public User getUserByName(String name) {
+
+        Session s = sessionFactory.getCurrentSession();
+        Transaction tx = null;
+        try {
+            tx = s.beginTransaction();
+            String hql = "FROM User d where name= :name";
+            Query<User> query = s.createQuery(hql, User.class);
+            query.setParameter("name", name);
+            User user = query.uniqueResult();
+            tx.commit();
+            return user;
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw new HibernateException("Error retrieving user by name.", e);
+        }
+    }
+
+    @Override
     public User getUserById(Long id) {
         Session s = sessionFactory.getCurrentSession();
         Transaction tx = null;

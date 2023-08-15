@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/car")
 public class CarController {
 
@@ -25,10 +26,10 @@ public class CarController {
     private InsuranceService insuranceService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Car> getCars() {
+    public ResponseEntity<List<Car>> getCars() {
         logger.info("This is Car controller");
         List<Car> cars = carService.getCars();
-        return cars;
+        return ResponseEntity.ok(cars);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

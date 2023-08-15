@@ -87,5 +87,9 @@ public class UserService {
             session.close();
         }
     }
+
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
+    }
 }
 

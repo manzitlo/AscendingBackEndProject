@@ -9,4 +9,5 @@ public interface IUserDao {
     User saveUser(User user);
     User update(User user);
     void delete(User user);
+    User getUserByName(String name);
 }

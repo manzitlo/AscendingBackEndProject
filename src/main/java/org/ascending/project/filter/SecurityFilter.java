@@ -36,6 +36,17 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         logger.info("Start to do authorization");
         HttpServletRequest req = (HttpServletRequest) servletRequest;
+
+
+        // If it's an OPTIONS request (CORS preflight), just continue in the chain.
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        logger.info("Start to do authorization");
+
+
         int statusCode = authorization(req);
         if (statusCode == HttpServletResponse.SC_ACCEPTED){
             filterChain.doFilter(servletRequest, servletResponse);

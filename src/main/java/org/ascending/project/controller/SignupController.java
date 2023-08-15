@@ -37,9 +37,12 @@ public class SignupController {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            User existingUser = userService.getUserByEmail(user.getEmail());
-            if (existingUser != null) {
-                return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
+            User existingUserByEmail = userService.getUserByEmail(user.getEmail());
+            User existingUserByName = userService.getUserByName(user.getName());
+
+            if (existingUserByEmail != null || existingUserByName != null) {
+
+                return new ResponseEntity<>("Registration failed (the name or email might already exist).", HttpStatus.BAD_REQUEST);
             }
 
             User savedUser = userService.saveUser(user, session);
