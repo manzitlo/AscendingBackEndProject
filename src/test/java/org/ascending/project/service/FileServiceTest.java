@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,7 +33,7 @@ public class FileServiceTest {
 
     @Test
     public void uploadFileTest_happyPath() throws IOException {
-//        File file = new File("/file.txt");
+//        MultipartFile file = new File("/file.txt");
         fileService.UploadFile("car-insurance-customer-beproject", file);
         verify(s3Client, times(1)).putObject(any(PutObjectRequest.class));
     }
