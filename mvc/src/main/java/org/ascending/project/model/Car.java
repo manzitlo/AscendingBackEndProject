@@ -12,7 +12,6 @@ public class Car {
     public Car() {}
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

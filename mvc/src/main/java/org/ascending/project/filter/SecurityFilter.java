@@ -62,6 +62,11 @@ public class SecurityFilter implements Filter {
         }
 
         String token = req.getHeader("Authorization");
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
         if (token == null || token.isEmpty()) {
             logger.warn("Missing Authorization header");
             return HttpServletResponse.SC_UNAUTHORIZED;
@@ -90,7 +95,12 @@ public class SecurityFilter implements Filter {
 
         String allowedResources = getAllowResourcesBasedOnVerb(req.getMethod(), claims);
         for (String s : allowedResources.split(",")) {
-            if (uri.trim().toLowerCase().startsWith(s.trim().toLowerCase())) {
+            String url_trim = uri.trim().toLowerCase();
+            String s_trim = s.trim().toLowerCase();
+
+            logger.info("url - {}; s - {}; {} - {}", url_trim, "\"" + s_trim + "\"", url_trim.startsWith(s_trim), !s_trim.equals(""));
+
+            if (!s_trim.equals("") && url_trim.startsWith(s_trim)) {
                 return HttpServletResponse.SC_ACCEPTED;
             }
         }
@@ -106,11 +116,12 @@ public class SecurityFilter implements Filter {
             case "POST":
                 return (String) claims.get("allowedCreateResources");
             case "PUT":
+            case "PATCH":
                 return (String) claims.get("allowedUpdateResources");
             case "DELETE":
                 return (String) claims.get("allowedDeleteResources");
             default:
-                return "/";
+                return "";
         }
     }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URL;
 
 @Service
 public class FileService {
@@ -30,10 +31,15 @@ public class FileService {
                 file.getOriginalFilename(), file.getInputStream(), null);
 
         s3Client.putObject(request);
-        return getUrl(bucketName, file.getName());
+        return getUrl(bucketName, file.getOriginalFilename());
     }
 
-    private String getUrl(String buckerName, String s3Key){
-        return s3Client.getUrl(buckerName, s3Key).toString();
+    private String getUrl(String bucketName, String s3Key){
+        URL url = s3Client.getUrl(bucketName, s3Key);
+            if (url == null) {
+                logger.error("Unable to fetch URL for bucket: {} and key: {}", bucketName, s3Key);
+                return null;
+            }
+            return url.toString();
     }
 }
