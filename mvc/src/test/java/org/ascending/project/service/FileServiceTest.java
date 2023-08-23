@@ -3,10 +3,12 @@ package org.ascending.project.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.ascending.project.ApplicationBootstrap;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -28,22 +30,28 @@ public class FileServiceTest {
     @InjectMocks
     private FileService fileService;
 
-    @Autowired
+    @Mock
     private AmazonS3 s3Client;
 
     @Mock
     private MultipartFile file;
 
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        reset(s3Client, file);
+    }
+
     @Test
     public void uploadFileTest_happyPath() throws IOException {
-//        MultipartFile file = new File("/file.txt");
-        fileService.UploadFile("car-insurance-customer-beproject", file);
+        fileService.uploadFile("car-insurance-customer-beproject", file);
         verify(s3Client, times(1)).putObject(any(PutObjectRequest.class));
     }
 
-    @Test
-    public void uploadFileTest_fileIsNull(){
-
+    @Test(expected = IllegalArgumentException.class)
+    public void uploadFileTest_fileIsNull() throws IOException {
+        fileService.uploadFile("car-insurance-customer-beproject", null);
     }
 
 }
+

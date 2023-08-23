@@ -23,11 +23,11 @@ public class FileController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String UploadFile(@RequestParam("file") MultipartFile file){
+    public String uploadFile(@RequestParam("file") MultipartFile file){
         logger.info("test file name {}", file.getOriginalFilename());
 
         try{
-            String url = fileService.UploadFile("car-insurance-customer-beproject", file);
+            String url = fileService.uploadFile("car-insurance-customer-beproject", file);
             logger.info("Successfully uploaded file {} to S3..", file.getOriginalFilename());
             return url;
         } catch (IOException e){

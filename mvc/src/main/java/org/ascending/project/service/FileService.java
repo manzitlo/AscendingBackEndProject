@@ -21,7 +21,7 @@ public class FileService {
     @Autowired
     AmazonS3 s3Client;
 
-    public String UploadFile(String bucketName, MultipartFile file) throws IOException {
+    public String uploadFile(String bucketName, MultipartFile file) throws IOException {
         if (file == null){
             logger.error("Cannot upload a null file");
             return bucketName;

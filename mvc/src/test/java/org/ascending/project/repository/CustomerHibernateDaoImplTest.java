@@ -24,15 +24,6 @@ public class CustomerHibernateDaoImplTest {
     @Before
     public void setup() {
 
-//        cu1 = new Customer();
-////        cu1.setCustomerId(2);
-//        cu1.setLastName("Luo");
-//        cu1.setFirstName("Wenzhe");
-//        cu1.setGender("male");
-//        cu1.setAge(Integer.valueOf("29"));
-////        cu1.setCarId(15);
-//        cu1.setTransactionDate(Date.valueOf("2020-02-19"));
-//        customerHibernateDao.save(cu1);
     }
 
     @After

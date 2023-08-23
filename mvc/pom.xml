@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>AscendingProject</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,6 +82,7 @@
       <artifactId>guava</artifactId>
       <version>32.0.1-jre</version>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -135,17 +136,14 @@
       <artifactId>spring-boot</artifactId>
       <version>2.1.7.RELEASE</version>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>test</scope>
-    </dependency>
+
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
       <version>5.1.9.RELEASE</version>
     </dependency>
+
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
@@ -165,11 +163,18 @@
       <version>2.1.7.RELEASE</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <version>5.1.9.RELEASE</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.28</version>
     </dependency>
 
     <dependency>
@@ -183,11 +188,13 @@
       <artifactId>javax.persistence-api</artifactId>
       <version>2.2</version>
     </dependency>
+
     <dependency>
       <groupId>com.davidkarlsen.commonstransaction.spring</groupId>
       <artifactId>commons-transaction-spring</artifactId>
       <version>1.4</version>
     </dependency>
+
     <dependency>
       <groupId>com.davidkarlsen.commonstransaction.spring</groupId>
       <artifactId>commons-transaction-spring</artifactId>
