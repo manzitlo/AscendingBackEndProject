@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.UUID;
 
 @Service
 public class FileService {
@@ -27,8 +28,14 @@ public class FileService {
             return bucketName;
         }
 
+        // Generate a unique UUID for the file
+        String uuid = UUID.randomUUID().toString();
+
+        // Append the UUID to the original filename
+        String newFileName = uuid + "_" + file.getOriginalFilename();
+
         PutObjectRequest request = new PutObjectRequest(bucketName,
-                file.getOriginalFilename(), file.getInputStream(), null);
+                newFileName, file.getInputStream(), null);
 
         s3Client.putObject(request);
         return getUrl(bucketName, file.getOriginalFilename());
