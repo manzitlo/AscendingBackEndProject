@@ -22,12 +22,12 @@ public class HibernateUtil {
         if (sessionFactory == null) {
             try {
 
-                String[] modelPackages = {"org.ascending.project.model"}; // right address
-                String dbDriver = "org.postgresql.Driver";
-                String dbDialect = "org.hibernate.dialect.PostgreSQL9Dialect";
-                String dbUrl = "jdbc:postgresql://localhost:5431/Car_DB";
-                String dbUser = "wenzhe";
-                String dbPassword = "Wenzhe7777";
+                String[] modelPackages = {"org.ascending.training.model"};
+                String dbDriver = System.getProperty("database.driver");
+                String dbDialect = System.getProperty("database.dialect");
+                String dbUrl = System.getProperty("database.url");
+                String dbUser = System.getProperty("database.user");
+                String dbPassword = System.getProperty("database.password");
 
                 Configuration configuration = new Configuration();
                 Properties settings = new Properties();
