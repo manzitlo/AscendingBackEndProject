@@ -123,23 +123,18 @@ public class UserDaoHibernateImpl implements IUserDao {
     }
 
     @Override
-    public User getUserByCredentials(String identifier, String password) throws UserNotFoundException {
-        logger.info("Retrieving user by identifier: {}", identifier);
+    public User getUserByCredentials(String email, String name, String password) throws UserNotFoundException {
+        String hql = "FROM User as u where (lower(u.email) = :email OR lower(u.name) = :email) and u.password = :password";
 
-        String hql = "FROM User as u where (lower(u.email) = :identifier OR lower(u.name) = :identifier) and u.password = :password";
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tx = null;
         try {
-            tx = session.beginTransaction();
-            Query<User> query = session.createQuery(hql, User.class);
-            query.setParameter("identifier", identifier.toLowerCase().trim());
+            Session session = sessionFactory.openSession();
+            Query<User> query = session.createQuery(hql);
+            query.setParameter("email", email.toLowerCase().trim());
             query.setParameter("password", password);
-            User user = query.uniqueResult();
-            tx.commit();
-            return user;
-        } catch (RuntimeException e) {
-            if (tx != null) tx.rollback();
-            throw new HibernateException("Error retrieving user by credentials.", e);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            logger.error("error {}", e.getMessage());
+            throw new UserNotFoundException("can't find user record with email=" + email + ", password=" + password);
         }
     }
 

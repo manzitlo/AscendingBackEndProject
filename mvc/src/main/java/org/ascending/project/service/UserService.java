@@ -25,8 +25,8 @@ public class UserService {
     @Autowired
     private SessionFactory sessionFactory; // Inject the SessionFactory
 
-    public User getUserByCredentials(String email, String password) throws Exception {
-        return userDao.getUserByCredentials(email, password);
+    public User getUserByCredentials(String email, String name, String password) throws Exception {
+        return userDao.getUserByCredentials(email, name, password);
     }
 
     public User getUserById(Long id) {

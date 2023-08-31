@@ -22,7 +22,7 @@ public class AuthController {
     public ResponseEntity userLogin(@RequestBody User user){
 
         try{
-            User u = userService.getUserByCredentials(user.getEmail(), user.getPassword());
+            User u = userService.getUserByCredentials(user.getEmail(), user.getName(), user.getPassword());
             if (u == null) {
 
                 return new ResponseEntity<>("401 Unauthorized", HttpStatus.UNAUTHORIZED);

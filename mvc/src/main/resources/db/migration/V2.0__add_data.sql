@@ -1,8 +1,8 @@
-insert into roles (name, allowed_resource, allowed_read, allowed_create, allowed_update, allowed_delete, allowed_upload, allowed_delete_users, allowed_manage_posts, allowed_manage_data, allowed_manage_comments, allowed_manage_events, allowed_manage_tags, allowed_manage_notifications, allowed_moderate_content, allowed_analytics ) values
-                                                                                                             ('Admin', '/', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE , TRUE, TRUE, TRUE, TRUE, TRUE),
-                                                                                                             ('Agent', '/custs,/customers,/cars,/cas,/insus,/insurances', TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE , TRUE, TRUE, TRUE, TRUE, FALSE, TRUE),
-                                                                                                             ('User', '/custs,/customers,/cars,/cas', TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE , TRUE, TRUE, TRUE, TRUE, FALSE, FALSE),
-                                                                                                             ('Moderator', '/', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE )
+insert into roles (name, allowed_resource, allowed_read, allowed_create, allowed_update, allowed_delete) values
+                                                                                                             ('Admin', '/', TRUE, TRUE, TRUE, TRUE),
+                                                                                                             ('Support', '/custs,/customers,/cars,/cas,/insus,/insurances', TRUE, TRUE, TRUE, TRUE),
+                                                                                                             ('User', '/custs,/customers,/cars,/cas', TRUE, TRUE, TRUE, TRUE),
+                                                                                                             ('Moderator', '/', TRUE, FALSE, FALSE, FALSE)
 ;
 commit;
 

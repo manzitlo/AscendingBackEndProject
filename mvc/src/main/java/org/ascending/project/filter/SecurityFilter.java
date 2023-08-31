@@ -7,6 +7,7 @@ import org.ascending.project.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -55,6 +56,12 @@ public class SecurityFilter implements Filter {
         }
     }
     private int authorization(HttpServletRequest req) {
+
+        // Check null or not before use. Initialize dependency first then inject.
+        if (jwtService == null) {
+            // Once injected, it will inject all dependencies required by various filter instance.
+            SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, req.getServletContext());
+        }
 
         String uri = req.getRequestURI();
         if (IGNORED_PATH.contains(uri)){

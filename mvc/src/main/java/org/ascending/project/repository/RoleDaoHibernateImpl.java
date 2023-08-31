@@ -46,7 +46,7 @@ public class RoleDaoHibernateImpl implements IRoleDao {
         try {
 
             String hql = "FROM Role r WHERE r.name = :roleName";
-            Query<Role> query = session.createQuery(hql, Role.class);
+            Query<Role> query = session.createQuery(hql);
             query.setParameter("roleName", roleName);
             Role result = query.uniqueResult();
 
