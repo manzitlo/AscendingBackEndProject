@@ -37,4 +37,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-ops
+ops/container/mvc-1.0-SNAPSHOT.war
+ops/container/setenv.sh
