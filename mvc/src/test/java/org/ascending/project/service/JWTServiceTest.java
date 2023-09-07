@@ -24,7 +24,7 @@ public class JWTServiceTest {
 
         User u = new User();
         u.setId(1);
-        u.setName("Wenzhe");
+        u.setUsername("Wenzhe");
 
 
         String token = jwtService.generateToken(u);
@@ -38,12 +38,12 @@ public class JWTServiceTest {
 
         User u = new User();
         u.setId(1L);
-        u.setName("Wenzhe");
+        u.setUsername("Wenzhe");
         String token = jwtService.generateToken(u);
         Claims c = jwtService.decryptToken(token);
         String userName = c.getSubject();
 
-        assertEquals(u.getName(), userName);
+        assertEquals(u.getUsername(), userName);
     }
 
 }

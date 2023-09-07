@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Transactional
 public class AnswerHibernateDaoImpl implements IAnswerDao {
     static final Logger logger = LoggerFactory.getLogger(AnswerHibernateDaoImpl.class);
 

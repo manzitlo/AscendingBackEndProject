@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Transactional
 public class EventHibernateDaoImpl implements IEventDao {
 
     static final Logger logger = LoggerFactory.getLogger(EventHibernateDaoImpl.class);
