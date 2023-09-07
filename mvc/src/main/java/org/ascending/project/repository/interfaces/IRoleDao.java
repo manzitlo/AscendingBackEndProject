@@ -1,4 +1,4 @@
-package org.ascending.project.repository;
+package org.ascending.project.repository.interfaces;
 
 import org.ascending.project.model.Role;
 import org.ascending.project.model.User;

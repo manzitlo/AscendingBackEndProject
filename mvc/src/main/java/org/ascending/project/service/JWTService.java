@@ -33,7 +33,7 @@ public class JWTService {
         // claims = payload, set payload
         Claims claims = Jwts.claims();
         claims.setId(String.valueOf(user.getId()));
-        claims.setSubject(user.getName());
+        claims.setSubject(user.getUsername());
         claims.setIssuedAt(new Date(System.currentTimeMillis()));
         claims.setIssuer(ISSUER);
         claims.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME));
@@ -43,6 +43,7 @@ public class JWTService {
         String allowedCreateResources = "";
         String allowedUpdateResources = "";
         String allowedDeleteResources = "";
+        String allowedUploadResources = "";
 
         String allowedResource = roles.stream().map(role -> role.getAllowedResource()).collect(Collectors.joining(","));
         claims.put("allowedResources", allowedResource);
@@ -57,18 +58,22 @@ public class JWTService {
                 allowedUpdateResources = String.join(role.getAllowedResource(), allowedUpdateResources, ",");
             if (role.isAllowedDelete())
                 allowedDeleteResources = String.join(role.getAllowedResource(), allowedDeleteResources, ",");
+            if (role.isAllowedUpload())
+                allowedUploadResources = String.join(role.getAllowedResource(), allowedUploadResources, ",");
         }
 
         logger.info("======, allowedReadResources = {}", allowedReadResources);
         logger.info("======, allowedCreateResources = {}", allowedCreateResources);
         logger.info("======, allowedUpdateResources = {}", allowedUpdateResources);
         logger.info("======, allowedDeleteResources = {}", allowedDeleteResources);
+        logger.info("======, allowedUploadResources = {}", allowedUploadResources);
 
 
         claims.put("allowedReadResources", allowedReadResources.replaceAll(",$", ""));
         claims.put("allowedCreateResources", allowedCreateResources.replaceAll(",$", ""));
         claims.put("allowedUpdateResources", allowedUpdateResources.replaceAll(",$", ""));
         claims.put("allowedDeleteResources", allowedDeleteResources.replaceAll(",$", ""));
+        claims.put("allowedUploadResources", allowedDeleteResources.replaceAll(",$", ""));
 
         // set JWT claim
         JwtBuilder builder = Jwts.builder().setClaims(claims).signWith(signatureAlgorithm, signingKey);

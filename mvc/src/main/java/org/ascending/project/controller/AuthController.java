@@ -21,10 +21,13 @@ public class AuthController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity userLogin(@RequestBody User user){
 
-        try{
-            User u = userService.getUserByCredentials(user.getEmail(), user.getName(), user.getPassword());
-            if (u == null) {
 
+        // check which one is not null and use it.
+        String identifier = (user.getEmail() != null && !user.getEmail().isEmpty()) ? user.getEmail() : user.getUsername();
+
+        try{
+            User u = userService.getUserByCredentials(identifier, user.getPassword());
+            if (u == null) {
                 return new ResponseEntity<>("401 Unauthorized", HttpStatus.UNAUTHORIZED);
             }
             return ResponseEntity.ok().body(jwtService.generateToken(u));

@@ -1,8 +1,9 @@
 package org.ascending.project.service;
 
 import org.ascending.project.model.User;
-import org.ascending.project.repository.IRoleDao;
-import org.ascending.project.repository.IUserDao;
+import org.ascending.project.repository.interfaces.IQuestionDao;
+import org.ascending.project.repository.interfaces.IRoleDao;
+import org.ascending.project.repository.interfaces.IUserDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -20,13 +21,10 @@ public class UserService {
     private IUserDao userDao;
 
     @Autowired
-    private IRoleDao roleDao;
-
-    @Autowired
     private SessionFactory sessionFactory; // Inject the SessionFactory
 
-    public User getUserByCredentials(String email, String name, String password) throws Exception {
-        return userDao.getUserByCredentials(email, name, password);
+    public User getUserByCredentials(String identifier, String password) throws Exception {
+        return userDao.getUserByCredentials(identifier, password);
     }
 
     public User getUserById(Long id) {
@@ -37,7 +35,7 @@ public class UserService {
         return userDao.getUserByEmail(email);
     }
 
-    public User saveUser(User user, Session session) throws Exception {
+    public User saveUser(User user) {
         User savedUser;
         try {
             savedUser = userDao.saveUser(user);
@@ -47,8 +45,6 @@ public class UserService {
         }
         return savedUser;
     }
-
-
 
     public User update(User user) {
         Session session = sessionFactory.openSession();
@@ -75,7 +71,6 @@ public class UserService {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-
             userDao.delete(user);
 
             transaction.commit();
@@ -88,8 +83,10 @@ public class UserService {
         }
     }
 
-    public User getUserByName(String name) {
-        return userDao.getUserByName(name);
+    public User getUserByUsername(String username) {
+        return userDao.getUserByUsername(username);
     }
+
+
 }
 

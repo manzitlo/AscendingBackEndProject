@@ -1,6 +1,9 @@
 package org.ascending.project.repository;
 
-import org.ascending.project.model.Car;
+import org.ascending.project.model.Answer;
+import org.ascending.project.repository.exception.DatabaseAccessException;
+import org.ascending.project.repository.exception.NotFoundException;
+import org.ascending.project.repository.interfaces.IAnswerDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,118 +20,93 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class CarHibernateDaoImpl implements ICarDao {
-    public static final Logger logger = LoggerFactory.getLogger(CarHibernateDaoImpl.class);
+public class AnswerHibernateDaoImpl implements IAnswerDao {
+    static final Logger logger = LoggerFactory.getLogger(AnswerHibernateDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
-    @Override
-    public void save(Car car){
-        logger.info("Start to getCar from Postgres via Hibernate");
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-
-        try{
-            transaction = session.beginTransaction();
-            session.save(car);
-            transaction.commit();
-            session.close();
-
-        } catch (HibernateException e){
-            if(transaction != null) {
-                logger.error("Save transaction failed, rolling back");
-                transaction.rollback();
-            }
-            logger.error("Open session exception or close session exception", e);
-            session.close();
-            throw e;
-        }
-        logger.info("Hava already save {}", car);
-    }
 
     @Override
-    public List<Car> getCars() {
-        logger.info("Start to getCar from Postgres via Hibernate");
-        List<Car> cars = new ArrayList<>();
+    public List<Answer> getAnswers() {
+        List<Answer> answers = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
-            String hql = "from Car";
-            Query<Car> query = session.createQuery(hql);
-            cars = query.list();
+            String hql = "FROM Answer";
+            Query<Answer> query = session.createQuery(hql, Answer.class);
+            answers = query.list();
         } catch (HibernateException e) {
-            logger.error("Unable to fetch cars", e);
+            logger.error("Exception while getting answers", e);
+            throw new DatabaseAccessException("Error accessing the database", e);
         }
-        logger.info("Get cars {}", cars);
-        return cars;
-    }
-
-
-    @Override
-    // Update
-    public Car getById(long id) {
-        logger.info("Start to getCar from Postgres via Hibernate");
-        Session session = sessionFactory.openSession();
-        String hql = "FROM Car ca where id = :Id";
-
-        try{
-
-            Query<Car> query = session.createQuery(hql);
-            query.setParameter("Id", id);
-            Car result = query.uniqueResult();
-            session.close();
-            return result;
-
-        } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
-            session.close();
-            return null;
-        }
+        return answers;
     }
 
     @Override
-    public void delete(Car car) {
-        logger.info("Start to getCar from Postgres via Hibernate");
+    public void save(Answer answer) {
 
-        Transaction transaction = null;
-
-        Session session = sessionFactory.openSession();
-
-        try{
-
-            transaction = session.beginTransaction();
-            session.delete(car);
-            transaction.commit();
-            session.close();
-
-        } catch (HibernateException e){
-            if (transaction != null){
-                logger.error("Delete transaction failed, Rollback...");
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            try {
+                session.save(answer);
+                transaction.commit();
+            } catch (HibernateException e) {
                 transaction.rollback();
+                logger.error("Exception while saving answer", e);
+                throw new DatabaseAccessException("Error accessing the database", e);
             }
-            logger.error("Unable to open or close", e);
-            session.close();
-            throw e;
         }
-        logger.info("Hava already delete {}", car);
     }
 
     @Override
-    public Car update(Car car){
-        Transaction transaction = null;
-        Session session = sessionFactory.openSession();
+    public Answer getById(Long id) {
+        Answer result = null;
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Event e where e.id = :Id";
+            Query<Answer> query = session.createQuery(hql, Answer.class);
+            query.setParameter("Id", id);
+            result = query.uniqueResult();
+        } catch (HibernateException e) {
+            logger.error("Exception while getting answer by id", e);
+            throw new DatabaseAccessException("Error accessing the database", e);
+        }
 
-        try{
+        if (result == null) {
+            throw new NotFoundException("Could not find answer with id " + id);
+        }
+
+        return result;
+    }
+
+    @Override
+    public void delete(Answer answer) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            try {
+                session.delete(answer);
+                transaction.commit();
+            } catch (HibernateException e) {
+                transaction.rollback();
+                logger.error("Exception while deleting answer", e);
+                throw new DatabaseAccessException("Error accessing the database", e);
+            }
+        }
+    }
+
+    @Override
+    public Answer update(Answer answer) {
+
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.update(car);
+            session.update(answer);
             transaction.commit();
-            Car ca = getById(car.getId());
-            session.close();
-            return ca;
-        } catch (HibernateException e){
+
+            return getById(answer.getId());
+        } catch (HibernateException e) {
             if (transaction != null){
                 transaction.rollback();
             }
             logger.error("failed to insert record", e);
-            return null;
+            throw new DatabaseAccessException("Error accessing the database", e);
         }
     }
 

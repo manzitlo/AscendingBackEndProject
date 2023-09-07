@@ -1,6 +1,9 @@
 package org.ascending.project.repository;
 
-import org.ascending.project.model.Insurance;
+import org.ascending.project.model.Question;
+import org.ascending.project.repository.exception.DatabaseAccessException;
+import org.ascending.project.repository.exception.NotFoundException;
+import org.ascending.project.repository.interfaces.IQuestionDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,125 +20,94 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class InsuranceHibernateDaoImpl implements IInsuranceDao{
+public class QuestionHibernateDaoImpl implements IQuestionDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(InsuranceHibernateDaoImpl.class);
+    static final Logger logger = LoggerFactory.getLogger(QuestionHibernateDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public void save(Insurance insurance){
-        logger.info("Start to getInsurance from Postgres via Hibernate");
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            session.save(insurance);
-            transaction.commit();
-            session.close();
-        } catch (HibernateException e){
-            if(transaction != null) {
-                logger.error("Save transaction failed, rolling back");
+    public void save(Question question) {
+
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            try {
+                session.save(question);
+                transaction.commit();
+            } catch (HibernateException e) {
                 transaction.rollback();
+                logger.error("Exception while saving question", e);
+                throw new DatabaseAccessException("Error accessing the database", e);
             }
-            logger.error("Open session exception or close session exception", e);
-            session.close();
-            throw e;
         }
-        logger.info("Hava already save {}", insurance);
+
     }
 
     @Override
-    public List<Insurance> getInsurances(){
-
-        logger.info("Start to getInsurance from Postgres via Hibernate");
-
-        List<Insurance> insurances = new ArrayList<>();
-
-        try{
-            Session session = sessionFactory.openSession();
-
-            String hql = "from Insurance";
-            Query<Insurance> query = session.createQuery(hql);
-
-            insurances = query.list();
-            session.close();
-
-        } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
+    public List<Question> getQuestions() {
+        List<Question> questions = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Question";
+            Query<Question> query = session.createQuery(hql, Question.class);
+            questions = query.list();
+        } catch (HibernateException e) {
+            logger.error("Exception while getting questions", e);
+            throw new DatabaseAccessException("Error accessing the database", e);
         }
 
-        logger.info("Get insurances {}", insurances);
-        return insurances;
+        return questions;
     }
 
     @Override
-    // Update
-    public Insurance getById(long id) {
-        logger.info("Start to getInsurance from Postgres via Hibernate");
-
-        Session session = sessionFactory.openSession();
-
-        String hql = "FROM Insurance i where id = :Id";
-        try{
-
-            Query<Insurance> query = session.createQuery(hql);
-            query.setParameter("Id",id);
-            Insurance result = query.uniqueResult();
-            session.close();
-            return result;
-
-        } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
-            session.close();
-            return null;
+    public Question getById(Long id) {
+        Question result = null;
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Question q where q.id = :Id";
+            Query<Question> query = session.createQuery(hql, Question.class);
+            query.setParameter("Id", id);
+            result = query.uniqueResult();
+        } catch (HibernateException e) {
+            logger.error("Exception while getting question by id", e);
+            throw new DatabaseAccessException("Error accessing the database", e);
         }
+
+        if (result == null) {
+            throw new NotFoundException("Could not find question with id " + id);
+        }
+
+        return result;
     }
 
     @Override
-    public void delete(Insurance insurance) {
-        logger.info("Start to getInsurance from Postgres via Hibernate");
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-
-        try{
-            transaction = session.beginTransaction();
-            session.delete(insurance);
-            transaction.commit();
-            session.close();
-            logger.debug("Removed insurance from cache: {}", insurance);
-
-        } catch (HibernateException e){
-            logger.error("Unable to open or close", e);
-            if (transaction != null){
-                logger.error("Delete Transaction failed... Rollback ing.");
+    public void delete(Question question) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            try {
+                session.delete(question);
+                transaction.commit();
+            } catch (HibernateException e) {
                 transaction.rollback();
+                logger.error("Exception while deleting question", e);
+                throw new DatabaseAccessException("Error accessing the database", e);
             }
-            session.close();
-            throw e;
         }
-        logger.info("Hava already delete {}", insurance);
     }
 
     @Override
-    public Insurance update(Insurance insurance){
-        Session session = sessionFactory.openSession();
+    public Question update(Question question) {
         Transaction transaction = null;
-        try {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.update(insurance);
+            session.update(question);
             transaction.commit();
-            Insurance i = getById(insurance.getId());
 
-            session.close();
-            return i;
+            return getById(question.getId());
         } catch (HibernateException e) {
             if (transaction != null){
                 transaction.rollback();
             }
             logger.error("failed to insert record", e);
-            session.close();
             return null;
         }
     }

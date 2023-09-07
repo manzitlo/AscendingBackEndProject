@@ -2,14 +2,12 @@ package org.ascending.project.repository;
 
 import org.ascending.project.model.Role;
 import org.ascending.project.model.User;
+import org.ascending.project.repository.interfaces.IRoleDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository

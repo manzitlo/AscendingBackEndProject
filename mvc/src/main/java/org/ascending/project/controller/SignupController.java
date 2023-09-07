@@ -38,14 +38,14 @@ public class SignupController {
             Transaction transaction = session.beginTransaction();
 
             User existingUserByEmail = userService.getUserByEmail(user.getEmail());
-            User existingUserByName = userService.getUserByName(user.getName());
+            User existingUserByName = userService.getUserByUsername(user.getUsername());
 
             if (existingUserByEmail != null || existingUserByName != null) {
 
                 return new ResponseEntity<>("Registration failed (the name or email might already exist).", HttpStatus.BAD_REQUEST);
             }
 
-            User savedUser = userService.saveUser(user, session);
+            User savedUser = userService.saveUser(user);
 
             Role defaultUserRole = roleService.getRoleByName("user", session);
             if (defaultUserRole != null) {

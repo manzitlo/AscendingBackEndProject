@@ -2,7 +2,7 @@ package org.ascending.project.service;
 
 import org.ascending.project.model.Role;
 import org.ascending.project.model.User;
-import org.ascending.project.repository.IRoleDao;
+import org.ascending.project.repository.interfaces.IRoleDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
