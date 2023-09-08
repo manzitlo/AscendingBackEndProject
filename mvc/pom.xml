@@ -203,9 +203,9 @@
         <version>6.0.4</version>
         <configuration>
           <driver>org.postgresql.Driver</driver>
-          <url>jdbc:postgresql://localhost:5431/Car_DB</url>
+          <url>jdbc:postgresql://localhost:5431/StudentQnA_DB</url>
           <user>wenzhe</user>
-          <password>Wenzhe7777</password>
+          <password>Wenzhe7777!</password>
           <locations>
             <location>db/migration</location>
           </locations>
