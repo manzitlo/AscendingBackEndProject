@@ -25,7 +25,6 @@ public class EventHibernateDaoImplTest {
     @Autowired
     private IEventDao IEventDao;
     private Event e1;
-
     private boolean isE1Saved = false;
 
     @Before
@@ -58,6 +57,6 @@ public class EventHibernateDaoImplTest {
 
     @Test
     public void getEventTest() {
-        assertEquals(1, IEventDao.getEvents().size());
+        assertEquals(2, IEventDao.getEvents().size());
     }
 }

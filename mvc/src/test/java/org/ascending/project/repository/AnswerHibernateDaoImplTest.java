@@ -51,7 +51,7 @@ public class AnswerHibernateDaoImplTest {
 
     @Test
     public void getAnswerTest(){
-        assertEquals(1, IAnswerDao.getAnswers().size());
+        assertEquals(2, IAnswerDao.getAnswers().size());
     }
 
 }

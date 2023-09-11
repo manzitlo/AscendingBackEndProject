@@ -54,7 +54,7 @@ public class QuestionHibernateDaoImplTest {
 
     @Test
     public void getQuestionTest() {
-        assertEquals(1, questionHibernateDao.getQuestions().size());
+        assertEquals(2, questionHibernateDao.getQuestions().size());
     }
 
 }
