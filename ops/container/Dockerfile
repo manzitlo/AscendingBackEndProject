@@ -1,6 +1,7 @@
-FROM tomcat:9.0.76-jre17
+FROM --platform=linux/amd64 tomcat:9.0.78-jre17
 
 MAINTAINER wenzheluo
+
 ARG PROFILE=dev
 ENV PROFILE ${PROFILE}
 
