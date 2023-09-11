@@ -39,3 +39,4 @@ build/
 
 ops/container/mvc-1.0-SNAPSHOT.war
 ops/container/setenv.sh
+ops/cicd/
