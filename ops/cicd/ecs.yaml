@@ -49,15 +49,13 @@ Resources:
           PortMappings:
             - ContainerPort: 8080
           Environment:
-            - Name: database.databaseName
-              Value: StudentQnA_DB
-            - Name: database.portNumber
-              Value: 5432
-            - Name: database.url
+            - Name: database_databaseName
+              Value: studentqna_db
+            - Name: database_url
               Value: "jdbc:postgresql://wenzheluo.cofbxnshsp2o.us-east-1.rds.amazonaws.com:5432/studentqna_db"
-            - Name: database.user
+            - Name: database_user
               Value: wenzhe
-            - Name: database.password
+            - Name: database_password
               Value: Wenzhe7777!
             - Name: jms.queue.name
               Value: AscendingCarInsurance
