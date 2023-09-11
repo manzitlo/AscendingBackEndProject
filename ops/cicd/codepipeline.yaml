@@ -166,7 +166,7 @@ Resources:
         Type: LINUX_CONTAINER
         EnvironmentVariables:
           - Name: STACK_NAME
-            Value: wenzheluo-ecs-studentqna
+            Value: ecs-studentqna
       ServiceRole:
         Fn::ImportValue: !Sub "${SecurityStack}-CodeBuildRole"
       TimeoutInMinutes: 60
