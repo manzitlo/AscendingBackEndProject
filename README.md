@@ -31,7 +31,7 @@ Utilizing various AWS services to deploy our project:
 ## 🔗 Binding with the Front-end Side
 
 🖥 Front End is currently **under development** 🛠. 
-- [🤔 String working on it 🤔](https://github.com/manzitlo/FrontEnd_AscendingProject)
+- [🤔 Still working on it 🤔](https://github.com/manzitlo/FrontEnd_AscendingProject)
 
 
 
