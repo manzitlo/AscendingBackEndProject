@@ -18,7 +18,7 @@ Utilizing various AWS services to deploy our project:
 ### 🖼 Screenshots
 
 <details>
-  <summary>Click to view screenshots</summary>
+  <summary> 🌎 Click to view screenshots</summary>
   
   ![CloudFormation Screenshot](screenshots/CloudFormation.jpg)
 
